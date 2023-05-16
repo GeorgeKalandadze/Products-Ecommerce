@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->boolean('is_admin')->default(false);
-            $table->string('password');
-            $table->rememberToken();
+            $table->decimal('total_price', 20, 2);
             $table->timestamps();
+            $table->foreignIdFor(\App\Models\User::class, 'created_by')->nullable();
+            $table->foreignIdFor(\App\Models\User::class, 'updated_by')->nullable();
         });
     }
 
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('orders');
     }
 };
