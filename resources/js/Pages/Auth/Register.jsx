@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
+import InputError from '@/Components/AuthComponents/InputError.jsx';
+import InputLabel from '@/Components/AuthComponents/InputLabel.jsx';
 import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
+import TextInput from '@/Components/AuthComponents/TextInput.jsx';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 export default function Register() {
@@ -28,7 +28,6 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Register" />
 
             <form onSubmit={submit}>
                 <div>
