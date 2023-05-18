@@ -40,9 +40,10 @@ export default function ForgotPassword({ status }) {
                 <InputError message={errors.email} className="mt-2" />
 
                 <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ml-4" disabled={processing}>
+                    <PrimaryButton className="w-full p-3.5 bg-[#194f7d] mb-6 text-center" disabled={processing}>
                         Email Password Reset Link
                     </PrimaryButton>
+
                 </div>
             </form>
         </GuestLayout>

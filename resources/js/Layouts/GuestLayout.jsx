@@ -1,6 +1,5 @@
 import ApplicationLogo from '@/Components/AuthComponents/ApplicationLogo.jsx';
 import { Link } from '@inertiajs/react';
-import Header from "@/Components/AuthComponents/Header";
 
 export default function Guest({ children,header}) {
     return (

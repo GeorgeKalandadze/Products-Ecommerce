@@ -31,6 +31,8 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout header={<Header
             labelText="Enter our Ecommerce Website"
             linkText="Don’t have an account?"
+            page="Sign Up"
+            link={"register"}
         />
         }>
 
