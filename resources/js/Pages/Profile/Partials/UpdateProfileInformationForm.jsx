@@ -1,7 +1,7 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
+import InputError from '@/Components/AuthComponents/InputError.jsx';
+import InputLabel from '@/Components/AuthComponents/InputLabel.jsx';
 import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
+import TextInput from '@/Components/AuthComponents/TextInput.jsx';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 
