@@ -16,19 +16,19 @@ use Inertia\Inertia;
 |
 */
 //
-//Route::get('/', function () {
-////    return Inertia::render('Welcome', [
-////        'canLogin' => Route::has('login'),
-////        'canRegister' => Route::has('register'),
-////        'laravelVersion' => Application::VERSION,
-////        'phpVersion' => PHP_VERSION,
-////    ]);
-//    return redirect()->route('home');
-//});
+Route::get('/', function () {
+    return Inertia::render('Auth/login', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+    return redirect()->route('home');
+});
 
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::middleware(['auth','verified'] )->group(function () {
+    Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
