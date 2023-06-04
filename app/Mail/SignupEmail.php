@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SignupEmail extends Mailable
+class SignupEmail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -23,6 +23,7 @@ class SignupEmail extends Mailable
 
     public function build()
     {
-        return $this->view('verifyEmail');
+        return $this->subject('Verify your email')
+            ->markdown('verifyEmail', ['user' => $this->user]);
     }
 }
