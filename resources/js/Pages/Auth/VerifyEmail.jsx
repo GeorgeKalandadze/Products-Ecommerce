@@ -14,7 +14,6 @@ export default function VerifyEmail({ status }) {
     return (
         <GuestLayout>
             <Head title="Email Verification" />
-
             <div className="mb-4 text-sm text-gray-600">
                 Thanks for signing up! Before getting started, could you verify your email address by clicking on the
                 link we just emailed to you? If you didn't receive the email, we will gladly send you another.
@@ -28,7 +27,7 @@ export default function VerifyEmail({ status }) {
 
             <form onSubmit={submit}>
                 <div className="mt-4 flex items-center justify-between">
-                    <PrimaryButton disabled={processing}>Resend Verification Email</PrimaryButton>
+                    <PrimaryButton className=" p-3.5 bg-[#194f7d]  text-center" disabled={processing}>Resend Verification Email</PrimaryButton>
 
                     <Link
                         href={route('logout')}
