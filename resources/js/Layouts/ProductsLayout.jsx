@@ -5,7 +5,9 @@ export default function ProductsLayout({ children }) {
     return (
         <div className="min-h-screen bg-gray-100 w-full">
             <Navbar/>
-            {children}
+            <div className="px-[80px] p-6">
+                {children}
+            </div>
         </div>
     );
 }
