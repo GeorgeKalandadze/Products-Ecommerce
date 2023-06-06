@@ -9,7 +9,6 @@ const Navbar = () => {
             <div className="flex gap-4 items-center">
                 <ShoppingCartOutlinedIcon
                     className="cursor-pointer bg-transparent"
-
                 />
                 <BurgerMenu/>
             </div>
