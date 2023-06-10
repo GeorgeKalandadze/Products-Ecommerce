@@ -44,8 +44,6 @@ class RegisteredUserController extends Controller
 
 
         event(new Registered($user));
-
-        Mail::to($user->email)->send(new SignupEmail($user));
         Auth::login($user);
 
         return redirect('/verify-email');
