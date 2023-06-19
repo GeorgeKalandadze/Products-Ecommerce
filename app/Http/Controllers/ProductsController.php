@@ -42,7 +42,11 @@ class ProductsController extends Controller
      */
     public function show(string $id)
     {
-        //
+       $product = Product::find($id);
+       return Inertia::render('SingleProductPage/SingleProduct', [
+           'productInfo' => $product
+       ]);
+
     }
 
     /**
