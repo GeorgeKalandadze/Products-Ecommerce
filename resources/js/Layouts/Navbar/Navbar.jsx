@@ -5,6 +5,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {Button, Menu, MenuItem} from '@mui/material';
 import axios from "axios";
 import { Dropdown, DropdownMenuItem, DropdownNestedMenuItem } from "./NavbarComps/Dropdown/Dropdown.jsx";
+import SearchIcon from '@mui/icons-material/Search';
 
 const Navbar = () => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -55,7 +56,7 @@ const Navbar = () => {
                 >
                     <div onClick={handleClick}>
                         <Dropdown
-                            trigger={<Button>Categories</Button>}
+                            trigger={<Button style={{color:"black"}}>Categories <ArrowDropDownIcon/></Button>}
                             menu={[
                                 categories.map((category) => (
                                     <DropdownNestedMenuItem
@@ -79,13 +80,20 @@ const Navbar = () => {
                             ]}
                         />
                     </div>
-
-
                 </li>
                 <li className="cursor-pointer">My Orders</li>
             </ul>
             <div className="flex gap-4 items-center">
+                <SearchIcon className="cursor-pointer"/>
                 <ShoppingCartOutlinedIcon className="cursor-pointer" />
+                <select
+                    className="appearance-none text-gray-700 leading-tight  bg-transparent border-none font-bold outline-0 cursor-pointer"
+                >
+                    <option value="en" >EN</option>
+                    <option value="fr">KA</option>
+                    {/* Add more language options as needed */}
+                </select>
+                {/*<BurgerMenu/>*/}
             </div>
         </div>
     );
