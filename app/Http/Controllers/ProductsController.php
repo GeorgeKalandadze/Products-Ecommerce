@@ -14,9 +14,10 @@ class ProductsController extends Controller
      */
     public function index()
     {
+        $products = Product::with('productImages')->get();
 
         return Inertia::render('Product/Products',[
-           
+            'products' => $products->toJson()
         ]);
     }
 
