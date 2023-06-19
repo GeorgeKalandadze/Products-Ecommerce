@@ -3,7 +3,7 @@ import ProductImage from '../../assets/laptop.jpg';
 import PrimaryButton from '@/Components/PrimaryButton';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
-const ProductCard = () => {
+const ProductCard = ({props}) => {
     const [isCartClicked, setIsCartClicked] = useState(false);
 
     const handleCartClick = () => {
@@ -11,25 +11,21 @@ const ProductCard = () => {
     };
 
     return (
-        <div className="p-4 transition duration-300 shadow-lg w-[350px] rounded relative">
+        <div className="p-4 transition duration-300 shadow-lg w-[350px] rounded relative" onClick={() => console.log(props.id)}>
             <img
-                src={ProductImage}
+                src={props.cart_image}
                 className="w-full h-[20.63rem] cursor-pointer"
             />
-            <p className="text-[1.17rem] mt-4 opacity-90">MackBook Air 77</p>
+            <p className="text-[1.17rem] mt-4 opacity-90">{props.name}</p>
             <div className="mt-4 flex justify-between">
-                <h2 className="font-bold text-[1.17rem]">$3500.99</h2>
+                <h2 className="font-bold text-[1.17rem]">${props.price}</h2>
                 <PrimaryButton
                     className={`rounded-none p-2 bg-[#008bd2]`}
                     onClick={handleCartClick}
                 >
-                    Add to Cart
+                    See Product
                 </PrimaryButton >
-                {isCartClicked && (
-                    <div className="absolute bottom-[85px] right-[30px] transform  bg-[#008bd2] rounded-full h-8 w-8 shadow-lg flex items-center justify-center p-[30px]">
-                        <ShoppingCartOutlinedIcon style={{ color: 'white' }} />
-                    </div>
-                )}
+              
             </div>
         </div>
     );

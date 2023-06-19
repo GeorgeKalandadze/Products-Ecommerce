@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,8 +14,11 @@ class ProductsController extends Controller
      */
     public function index()
     {
+        $products = Product::with('productImages')->get();
 
-        return Inertia::render('Product/Products');
+        return Inertia::render('Product/Products',[
+            'products' => $products->toJson()
+        ]);
     }
 
     /**
