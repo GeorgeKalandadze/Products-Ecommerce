@@ -16,7 +16,7 @@ class ProductsSeeder extends Seeder
     {
         Product::factory()
             ->count(30)
-            ->has(ProductImage::factory()->count(5))
+            ->has(ProductImage::factory()->count(4))
             ->create();
     }
 }
