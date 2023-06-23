@@ -44,7 +44,8 @@ class ProductsController extends Controller
     {
        $product = Product::find($id);
        return Inertia::render('SingleProductPage/SingleProduct', [
-           'productInfo' => $product
+           'productInfo' => $product,
+           'productImages' => $product->productImages,
        ]);
 
     }
