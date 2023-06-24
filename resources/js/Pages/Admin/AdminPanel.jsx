@@ -1,9 +1,13 @@
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout.jsx";
+import CountUp from "@/Components/CountUp.jsx";
 
 const AdminPanel = () => {
     return(
        <AdminPanelLayout>
-           <h1>some</h1>
+           <section className="p-[16px]">
+                <h1>Dashboard</h1>
+               <CountUp end={200}/>
+           </section>
        </AdminPanelLayout>
     )
 }
