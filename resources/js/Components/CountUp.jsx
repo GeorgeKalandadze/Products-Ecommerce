@@ -12,7 +12,7 @@ const CountUp = ({start = 0, end}) => {
             setState(result);
             ref.current = result;
         }
-        setTimeout(updateCounterState,10)
+        setTimeout(updateCounterState,5)
     }
 
     useEffect(() => {
