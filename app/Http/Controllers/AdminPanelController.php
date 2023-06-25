@@ -8,8 +8,12 @@ use Inertia\Inertia;
 
 class AdminPanelController extends Controller
 {
-    public function index(){
+    public function renderAdminPanel(){
 
         return Inertia::render('Admin/AdminPanel');
+    }
+
+    public function renderProductPanel(){
+        return Inertia::render('Admin/ProductsPanel');
     }
 }

@@ -33,7 +33,8 @@ Route::middleware(['auth','verified'] )->group(function () {
     Route::get('/products/{id}', [ProductsController::class, 'show']);
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/adminpanel',[AdminPanelController::class,'index']);
+    Route::get('/adminpanel', [AdminPanelController::class, 'renderAdminPanel'])->name('adminPanel.adminPanel');
+    Route::get('/productpanel',[AdminPanelController::class,'renderProductPanel'])->name('adminPanel.products');
 });
 
 require __DIR__.'/auth.php';

@@ -10,6 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import { Link} from '@inertiajs/react';
 const PersistentDrawerLeft = ({ isOpen,setOpen }) => {
     const theme = useTheme();
 
@@ -34,7 +35,8 @@ const PersistentDrawerLeft = ({ isOpen,setOpen }) => {
                         <CloseOutlinedIcon sx={{ color: 'white' }} />
                     </ListItemIcon>
                 </ListItemButton>
-                <ListItem disablePadding>
+                <Link href={route('adminPanel.adminPanel')}>
+                <ListItem disablePadding >
                     <ListItemButton>
                         <ListItemIcon>
                             <HomeOutlinedIcon sx={{ color: 'white' }} />
@@ -42,6 +44,8 @@ const PersistentDrawerLeft = ({ isOpen,setOpen }) => {
                         <ListItemText primary={'Dashboard'} sx={{ color: 'white' }} />
                     </ListItemButton>
                 </ListItem>
+                </Link>
+                <Link href={route('adminPanel.products')}>
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
@@ -50,6 +54,7 @@ const PersistentDrawerLeft = ({ isOpen,setOpen }) => {
                         <ListItemText primary={'Products'} sx={{ color: 'white' }} />
                     </ListItemButton>
                 </ListItem>
+                </Link>
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
