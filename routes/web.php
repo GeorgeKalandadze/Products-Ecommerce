@@ -33,8 +33,9 @@ Route::middleware(['auth','verified'] )->group(function () {
     Route::get('/products/{id}', [ProductsController::class, 'show']);
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/adminpanel', [AdminPanelController::class, 'renderAdminPanel'])->name('adminPanel.adminPanel');
-    Route::get('/productpanel',[AdminPanelController::class,'renderProductPanel'])->name('adminPanel.products');
+    Route::get('/a/panel', [AdminPanelController::class, 'renderAdminPanel'])->name('adminPanel.adminPanel');
+    Route::get('/a/products',[AdminPanelController::class,'renderProductPanel'])->name('adminPanel.products');
+    Route::get('/a/orders',[AdminPanelController::class,'renderOrderPanel'])->name('adminPanel.orders');
 });
 
 require __DIR__.'/auth.php';

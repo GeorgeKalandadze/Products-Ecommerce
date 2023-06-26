@@ -106,7 +106,6 @@ const ProductsPanel = () => {
                     <div className="mt-6">
                         <p>showing from 1 to 10</p>
                         <div>
-                            
                         </div>
                     </div>
                 </div>
