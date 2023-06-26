@@ -1,7 +1,7 @@
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout.jsx";
-import CountUp from "@/Components/CountUp.jsx";
 import Accordion from "@/Components/Accordion.jsx";
 import PersonIcon from '@mui/icons-material/Person';
+import StatCard from "@/Components/AdminPanelComps/StatCard.jsx";
 
 
 const AdminPanel = () => {
@@ -10,30 +10,10 @@ const AdminPanel = () => {
            <section className="p-[16px]">
                 <h1 className="font-bold text-[30px]">Dashboard</h1>
                <div className="mt-4 flex justify-between">
-                   <div>
-                       <div className="text-center w-[350px] bg-[#f3f4f6] p-4 rounded-[8px] shadow-xl">
-                           <h1 className="text-[20px] font-bold mb-3">Active Customers</h1>
-                           <h1 className="text-[30px] font-bold flex justify-center"><CountUp end={200}/>+</h1>
-                       </div>
-                   </div>
-                   <div>
-                       <div className="text-center w-[350px] bg-[#f3f4f6] p-4 rounded-[8px] shadow-xl">
-                           <h1 className="text-[20px] font-bold mb-3">Active Products</h1>
-                           <h1 className="text-[30px] font-bold flex justify-center"><CountUp end={400}/>+</h1>
-                       </div>
-                   </div>
-                   <div>
-                       <div className="text-center w-[350px] bg-[#f3f4f6] p-4 rounded-[8px] shadow-xl">
-                           <h1 className="text-[20px] font-bold mb-3">Paid Orders</h1>
-                           <h1 className="text-[30px] font-bold flex justify-center"><CountUp end={50}/>+</h1>
-                       </div>
-                   </div>
-                   <div>
-                       <div className="text-center w-[350px] bg-[#f3f4f6] p-4 rounded-[8px] shadow-xl">
-                           <h1 className="text-[20px] font-bold mb-3">Total Incomes</h1>
-                           <h1 className="text-[30px] font-bold flex justify-center"><CountUp end={20000.20}/>$</h1>
-                       </div>
-                   </div>
+                   <StatCard head="Active Customers" end={200}/>
+                   <StatCard head="Active Products" end={400}/>
+                   <StatCard head="Paid Orders" end={50}/>
+                   <StatCard head="Total Incomes" end={20000.20}/>
                </div>
                <div className="mt-6 grid grid-cols-[63%,35%] gap-6 justify-between">
                    <div className="bg-[#f3f4f6] p-4 rounded-[8px] shadow-xl h-[100vh]">

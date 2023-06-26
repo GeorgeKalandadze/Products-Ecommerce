@@ -20,9 +20,6 @@ const ProductsPanel = () => {
         setAnchorEl(null);
     };
 
-    const ITEM_HEIGHT = 48;
-
-
     return (
         <AdminPanelLayout>
             <section className="p-[16px]">
@@ -88,7 +85,7 @@ const ProductsPanel = () => {
                                     onClose={handleClose}
                                     PaperProps={{
                                         style: {
-                                            maxHeight: ITEM_HEIGHT * 4.5,
+                                            maxHeight: 48 * 4.5,
                                         },
                                     }}
                                 >
