@@ -5,3 +5,8 @@
 input::placeholder{
     font-size: 15px;
 }
+
+input{
+    background-color: #2563eb;
+
+}

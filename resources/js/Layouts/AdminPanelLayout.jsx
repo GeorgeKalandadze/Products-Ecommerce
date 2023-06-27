@@ -7,6 +7,7 @@ import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined
 import { Modal } from '@mui/material';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import { TextField } from "@mui/material";
 
 const AdminPanelLayout = ({ children }) => {
     const [open, setOpen] = useState(false);
@@ -34,7 +35,7 @@ const AdminPanelLayout = ({ children }) => {
 
     return (
         <>
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', }}>
                 <Sidebar isOpen={open} setOpen={setOpen}/>
                 <nav className="w-full p-4 bg-gray-100 flex justify-between items-center">
                     <MenuIcon sx={{ color: 'black', cursor: 'pointer' }} onClick={handleDrawerOpen} />

@@ -36,6 +36,7 @@ Route::middleware(['auth','verified'] )->group(function () {
     Route::get('/a/panel', [AdminPanelController::class, 'renderAdminPanel'])->name('adminPanel.adminPanel');
     Route::get('/a/products',[AdminPanelController::class,'renderProductPanel'])->name('adminPanel.products');
     Route::get('/a/orders',[AdminPanelController::class,'renderOrderPanel'])->name('adminPanel.orders');
+    Route::get('/a/users',[AdminPanelController::class,'renderUserPanel'])->name('adminPanel.users');
 });
 
 require __DIR__.'/auth.php';

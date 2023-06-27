@@ -24,4 +24,9 @@ class AdminPanelController extends Controller
     {
         return Inertia::render('Admin/Orders');
     }
+
+    public function renderUserPanel(): Response
+    {
+        return Inertia::render('Admin/Users');
+    }
 }

@@ -1,19 +1,16 @@
-import AdminPanelLayout from "@/Layouts/AdminPanelLayout.jsx";
-import ProductImg from '../../assets/laptop.jpg'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import IconButton from '@mui/material/IconButton';
-import {useState} from "react";
+import ProductImg from "@/assets/laptop.jpg";
+import IconButton from "@mui/material/IconButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert.js";
 import {Menu, MenuItem} from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ProductForm from "@/Components/AdminPanelComps/ProductForm.jsx";
+import EditIcon from "@mui/icons-material/Edit.js";
+import DeleteIcon from "@mui/icons-material/Delete.js";
+import AdminPanelLayout from "@/Layouts/AdminPanelLayout.jsx";
+import {useState} from "react";
 
 
-
-const ProductsPanel = () => {
+const Users = () => {
     const options = [10, 20, 30, 40, 50];
     const [anchorEl, setAnchorEl] = useState(null);
-    const [openCreateProduct, setOpenCreateProduct] = useState(false);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -21,15 +18,12 @@ const ProductsPanel = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-
-    return (
+    return(
         <AdminPanelLayout>
-          <ProductForm open={openCreateProduct} close={() => setOpenCreateProduct(false)}/>
             <section className="p-[16px]">
                 <div className="flex justify-between items-center">
                     <h1 className="font-bold text-[30px]">Products</h1>
-                    <button className="bg-[#423dce] text-white px-6 py-2.5 rounded font-bold" onClick={() => setOpenCreateProduct(true)}>Add New Product</button>
+                    <button className="bg-[#423dce] text-white px-6 py-2.5 rounded font-bold">Add New Product</button>
                 </div>
                 <div className="p-4 rounded-[8px]  bg-[#f3f4f6] mt-6 min-h-screen">
                     <div className="flex justify-between">
@@ -52,12 +46,12 @@ const ProductsPanel = () => {
                     </div>
                     <table className="mt-6 w-full ">
                         <thead className="bg-white border-b-2 border-t-2 ">
-                            <th className="py-[15px]">ID</th>
-                            <th>Image</th>
-                            <th>Title</th>
-                            <th>Price</th>
-                            <th>Last Updated At</th>
-                            <th>Actions</th>
+                        <th className="py-[15px]">ID</th>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Last Updated At</th>
+                        <th>Actions</th>
                         </thead>
                         <tbody>
                         <tr className="text-center mt-4 border-b-2 ">
@@ -116,4 +110,4 @@ const ProductsPanel = () => {
     )
 }
 
-export default ProductsPanel
+export default Users

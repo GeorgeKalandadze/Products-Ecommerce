@@ -65,6 +65,7 @@ const PersistentDrawerLeft = ({ isOpen,setOpen }) => {
                     </ListItemButton>
                 </ListItem>
                 </Link>
+                <Link href={route('adminPanel.users')}>
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>
@@ -73,6 +74,7 @@ const PersistentDrawerLeft = ({ isOpen,setOpen }) => {
                         <ListItemText primary={'Users'} sx={{ color: 'white' }} />
                     </ListItemButton>
                 </ListItem>
+                </Link>
                 <ListItem disablePadding>
                     <ListItemButton>
                         <ListItemIcon>

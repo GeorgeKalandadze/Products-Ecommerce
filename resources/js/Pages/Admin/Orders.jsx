@@ -1,5 +1,5 @@
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout.jsx";
-import { Bar, Doughnut } from "react-chartjs-2";
+import { Bar} from "react-chartjs-2";
 import { useState } from "react";
 import { Chart } from "chart.js";
 import {
@@ -107,7 +107,7 @@ const Orders = () => {
                     "#7DCE82", // November color
                     "#FF877C", // December color
                 ],
-               
+
             },
         ],
     });
@@ -115,6 +115,7 @@ const Orders = () => {
     return (
         <AdminPanelLayout>
             <section className="p-[16px]">
+                <h1 className="font-bold text-[30px]">Orders Statistic</h1>
                 <Bar data={userData} />
             </section>
         </AdminPanelLayout>
