@@ -6,6 +6,8 @@ import InputGroup from "@/Components/AdminPanelComps/InputGroup.jsx";
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
+import axios from "axios";
+import {useState, useEffect} from "react";
 
 const style = {
     position: 'absolute',
@@ -44,6 +46,31 @@ const scrollbarStyle = `
 
 
 const ProductForm = ({ open, close }) => {
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedSubcategory, setSelectedSubcategory] = useState('');
+    const [filteredSubcategories, setFilteredSubcategories] = useState([]);
+
+
+    useEffect(() => {
+        axios
+            .get(`${window.location.protocol}//${window.location.host}/api/categories`)
+            .then((res) => {
+                setCategories(res.data);
+            });
+    }, []);
+
+    const handleCategoryChange = (e) => {
+        const selectedCategoryId = e.target.value;
+        const selectedCategory = categories.find((category) => category.id === selectedCategoryId);
+        setSelectedCategory(selectedCategoryId);
+        setFilteredSubcategories(selectedCategory?.sub_categories
+            || []);
+        setSelectedSubcategory('');
+    };
+
+    console.log(categories)
+
     return (
         <div >
             <Modal
@@ -105,13 +132,18 @@ const ProductForm = ({ open, close }) => {
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 label="Category"
+                                value={selectedCategory}
+                                onChange={handleCategoryChange}
                             >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                {categories.map((category) => (
+                                    <MenuItem key={category.id} value={category.id}>
+                                        {category.name}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </div>
+
                     <div className="mt-4 flex flex-col gap-2">
                         <label className="font-medium text-[18px]">Subcategory</label>
                         <FormControl fullWidth>
@@ -120,10 +152,14 @@ const ProductForm = ({ open, close }) => {
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 label="Subcategory"
+                                value={selectedSubcategory}
+                                onChange={(e) => setSelectedSubcategory(e.target.value)}
                             >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                {filteredSubcategories.map((subcategory) => (
+                                    <MenuItem key={subcategory.id} value={subcategory.id}>
+                                        {subcategory.name}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </div>
