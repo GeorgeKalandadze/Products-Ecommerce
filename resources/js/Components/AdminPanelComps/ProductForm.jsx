@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import axios from "axios";
 import {useState, useEffect} from "react";
+import UploadImages from "@/Components/AdminPanelComps/UploadImages.jsx";
 
 const style = {
     position: 'absolute',
@@ -169,6 +170,7 @@ const ProductForm = ({ open, close }) => {
                         />
                         <label className="font-medium">If you want your Product to be publish, check this checkbox.</label>
                     </div>
+                    <UploadImages/>
                 </Box>
             </Modal>
         </div>

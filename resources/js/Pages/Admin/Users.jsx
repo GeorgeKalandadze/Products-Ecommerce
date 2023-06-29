@@ -23,7 +23,7 @@ const Users = () => {
             <section className="p-[16px]">
                 <div className="flex justify-between items-center">
                     <h1 className="font-bold text-[30px]">Products</h1>
-                    <button className="bg-[#423dce] text-white px-6 py-2.5 rounded font-bold">Add New Product</button>
+
                 </div>
                 <div className="p-4 rounded-[8px]  bg-[#f3f4f6] mt-6 min-h-screen">
                     <div className="flex justify-between">
