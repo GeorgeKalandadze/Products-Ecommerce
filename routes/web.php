@@ -5,7 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use \App\Http\Controllers\ProductsController;
-
+use \App\Http\Controllers\AdminPanelController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +33,10 @@ Route::middleware(['auth','verified'] )->group(function () {
     Route::get('/products/{id}', [ProductsController::class, 'show']);
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/a/panel', [AdminPanelController::class, 'renderAdminPanel'])->name('adminPanel.adminPanel');
+    Route::get('/a/products',[AdminPanelController::class,'renderProductPanel'])->name('adminPanel.products');
+    Route::get('/a/orders',[AdminPanelController::class,'renderOrderPanel'])->name('adminPanel.orders');
+    Route::get('/a/users',[AdminPanelController::class,'renderUserPanel'])->name('adminPanel.users');
 });
 
 require __DIR__.'/auth.php';

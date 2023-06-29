@@ -28,7 +28,9 @@
         "@mui/material": "^5.13.4",
         "@vitejs/plugin-react": "^4.0.0",
         "react": "^18.2.0",
+        "react-chartjs-2": "^5.2.0",
         "react-dom": "^18.2.0",
+        "react-pro-sidebar": "^1.1.0-alpha.1",
         "ziggy-js": "^1.6.0"
     }
 }

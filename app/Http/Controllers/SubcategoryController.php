@@ -17,7 +17,6 @@ class SubcategoryController extends Controller
         if (!$category) {
             return response()->json(['error' => 'Category not found'], 404);
         }
-
         $subcategory = SubCategory::where('id', $subcategoryId)
             ->where('category_id', $category->id)
             ->first();
@@ -27,5 +26,12 @@ class SubcategoryController extends Controller
         }
 
         return response()->json($subcategory);
+    }
+
+    public function getAllSubcategories(): JsonResponse
+    {
+        $subcategories = SubCategory::all();
+
+        return response()->json($subcategories);
     }
 }
