@@ -24,12 +24,14 @@ class ProductRequest extends FormRequest
         return [
             'name' => ['required', 'max:2000'],
             'slug' => ['required', 'max:2000'],
-            'quote' => ['required','string'],
+            'quote' => ['required', 'string'],
             'price' => ['required', 'numeric'],
             'description' => ['required', 'string'],
-            'published' => ['required', 'boolean'],
+            'published' => ['boolean'],
             'quantity' => ['required', 'numeric', 'integer', 'min:0'],
-            'subcategory_id' => ['nullable']
+            'subcategory_id' => ['nullable'],
+            'images' => ['required'],
+            'images.*' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048']
         ];
     }
 }

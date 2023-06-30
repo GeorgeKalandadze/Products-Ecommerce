@@ -23,7 +23,8 @@ class Product extends Model
     ];
 
     protected $attributes = [
-        'is_new' => true
+        'is_new' => true,
+//        'published' => true
     ];
 
     public function subCategory():BelongsTo

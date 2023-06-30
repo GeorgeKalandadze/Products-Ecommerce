@@ -9,7 +9,7 @@ const ImagesSection = ({images}) => {
                 {images.map((image) => (
                     <img
                         key={image.id}
-                        src={image.path}
+                        src={`http://localhost:8000/storage/app/public/${image.path}`}
                         className="w-[90px] h-[90px] cursor-pointer rounded"
                         onClick={() => setProductImage(image.path)}
                     />

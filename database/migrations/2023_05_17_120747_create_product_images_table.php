@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignIdFor(\App\Models\Product::class, 'created_by')->nullable();
+            $table->foreignIdFor(\App\Models\Product::class, 'updated_by')->nullable();
             $table->string('path')->nullable();
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')

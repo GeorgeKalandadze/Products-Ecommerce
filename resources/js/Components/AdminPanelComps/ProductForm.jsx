@@ -9,6 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import axios from 'axios';
 import UploadImages from '@/Components/AdminPanelComps/UploadImages.jsx';
+import {useGlobalContext} from "@/Context/Context.jsx";
 
 const style = {
     position: 'absolute',
@@ -31,7 +32,7 @@ const ProductForm = ({ open, close }) => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [filteredSubcategories, setFilteredSubcategories] = useState([]);
-    const [productsData, setProductsData] = useState({});
+    const {productsData, setProductsData} = useGlobalContext()
 
     useEffect(() => {
         axios.get(`${window.location.protocol}//${window.location.host}/api/categories`).then((res) => {
@@ -57,16 +58,42 @@ const ProductForm = ({ open, close }) => {
 
     const handleCheckboxChange = (e) => {
         const { name, checked } = e.target;
+        const value = checked ? 1 : 0; // Convert checked value to 1 or 0
         setProductsData((prevData) => ({
             ...prevData,
-            [name]: checked,
+            [name]: value,
         }));
     };
 
     console.log(productsData);
 
+
+
+
     const postProducts = () => {
-        axios.post(`${window.location.protocol}//${window.location.host}/api/products/create`, productsData)
+        const formData = new FormData();
+        formData.append('name', productsData.name);
+        formData.append('description', productsData.name);
+        formData.append('price', productsData.price);
+        formData.append('published', JSON.stringify(productsData.published));
+        formData.append('quantity', productsData.quantity);
+        formData.append('quote', productsData.quote);
+        formData.append('slug', productsData.slug);
+        formData.append('subcategory_id', productsData.subcategory_id);
+
+        // Append the images to the FormData object
+        productsData.images.forEach((image, index) => {
+            formData.append(`images[${index}]`, image);
+        });
+
+        console.log([...formData])
+
+        axios
+            .post(`${window.location.protocol}//${window.location.host}/api/products/create`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data', // Set the correct content type
+                },
+            })
             .then((response) => {
                 console.log('Product successfully posted!', response);
                 // Do something with the response if needed
@@ -76,6 +103,8 @@ const ProductForm = ({ open, close }) => {
                 // Handle the error if needed
             });
     };
+
+
 
     return (
         <div>
@@ -186,12 +215,18 @@ const ProductForm = ({ open, close }) => {
                     <div className="mt-[30px] mb-[15px]">
                         <FormControlLabel
                             control={<Checkbox name="published" onChange={handleCheckboxChange} />}
-                            checked={productsData.published || false} // Provide a default value of false
+                            checked={productsData.published}
                         />
                         <label className="font-medium">If you want your Product to be published, check this checkbox.</label>
                     </div>
                     <UploadImages />
-                    <button onClick={postProducts} type="button">Create Product</button>
+                    <button
+                        onClick={postProducts}
+                        type="button"
+                        className="mt-6 bg-[#423dce] text-white px-6 py-3 font-medium rounded"
+                    >
+                        Create Product
+                    </button>
                 </Box>
             </Modal>
         </div>

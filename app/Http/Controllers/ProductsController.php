@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -36,6 +37,7 @@ class ProductsController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
+
         $product = Product::create([
             'name' => $data['name'],
             'slug' => $data['slug'],
@@ -47,8 +49,23 @@ class ProductsController extends Controller
             'subcategory_id' => $data['subcategory_id']
         ]);
 
-        return response()->json($product);
-    }
+        $images = $request->file('images');
+
+        if ($images && count($images) > 0) {
+            foreach ($images as $index => $image) {
+                if ($index > 4) {
+                    break; // Limit to four images
+                }
+
+                $imageName = $product->id . '_' . time() . '_' . $index . '.' . $image->getClientOriginalName();
+                $image->storeAs('public/product_images', $imageName); // Store image in the storage directory
+
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'path' => 'product_images/' . $imageName // Save the relative path of the image
+                ]);
+            }
+        }}
 
     /**
      * Display the specified resource.

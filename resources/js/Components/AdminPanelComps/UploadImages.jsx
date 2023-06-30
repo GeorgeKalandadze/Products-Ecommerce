@@ -1,20 +1,32 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import uploadImg from '../../assets/cloud-upload-regular-240.png';
 import ClearIcon from '@mui/icons-material/Clear';
+import {useGlobalContext} from "@/Context/Context.jsx";
 
 const UploadImages = () => {
     const wrapperRef = useRef(null);
     const [fileList, setFileList] = useState([]);
+    const {productsData, setProductsData} = useGlobalContext()
 
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
     const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
     const onDrop = () => wrapperRef.current.classList.remove('dragover');
 
+    useEffect(() => {
+        setProductsData((prevData) => ({
+            ...prevData,
+            'images': fileList
+        }))
+    },[fileList])
     const onFileDrop = (e) => {
         const newFiles = Array.from(e.target.files);
         if (newFiles.length > 0) {
             const updatedList = [...fileList, ...newFiles];
             setFileList(updatedList);
+            setProductsData((prevData) => ({
+                ...prevData,
+                images: updatedList,
+            }));
         }
     };
 
