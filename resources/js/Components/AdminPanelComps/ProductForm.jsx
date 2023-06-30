@@ -1,14 +1,14 @@
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import {Checkbox, FormControl, TextField, FormControlLabel} from "@mui/material";
-import InputGroup from "@/Components/AdminPanelComps/InputGroup.jsx";
+import { Checkbox, FormControl, FormControlLabel } from '@mui/material';
+import InputGroup from '@/Components/AdminPanelComps/InputGroup.jsx';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import axios from "axios";
-import {useState, useEffect} from "react";
-import UploadImages from "@/Components/AdminPanelComps/UploadImages.jsx";
+import axios from 'axios';
+import UploadImages from '@/Components/AdminPanelComps/UploadImages.jsx';
 
 const style = {
     position: 'absolute',
@@ -24,69 +24,69 @@ const style = {
     overflowY: 'auto',
     scrollbarWidth: 'thin',
     scrollbarColor: '#888 transparent',
-
 };
-
-const scrollbarStyle = `
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #888;
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-`;
-
-
 
 const ProductForm = ({ open, close }) => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [filteredSubcategories, setFilteredSubcategories] = useState([]);
-
+    const [productsData, setProductsData] = useState({});
 
     useEffect(() => {
-        axios
-            .get(`${window.location.protocol}//${window.location.host}/api/categories`)
-            .then((res) => {
-                setCategories(res.data);
-            });
+        axios.get(`${window.location.protocol}//${window.location.host}/api/categories`).then((res) => {
+            setCategories(res.data);
+        });
     }, []);
 
     const handleCategoryChange = (e) => {
         const selectedCategoryId = e.target.value;
         const selectedCategory = categories.find((category) => category.id === selectedCategoryId);
         setSelectedCategory(selectedCategoryId);
-        setFilteredSubcategories(selectedCategory?.sub_categories
-            || []);
+        setFilteredSubcategories(selectedCategory?.sub_categories || []);
         setSelectedSubcategory('');
     };
 
-    console.log(categories)
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setProductsData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
+
+    const handleCheckboxChange = (e) => {
+        const { name, checked } = e.target;
+        setProductsData((prevData) => ({
+            ...prevData,
+            [name]: checked,
+        }));
+    };
+
+    console.log(productsData);
+
+    const postProducts = () => {
+        axios.post(`${window.location.protocol}//${window.location.host}/api/products/create`, productsData)
+            .then((response) => {
+                console.log('Product successfully posted!', response);
+                // Do something with the response if needed
+            })
+            .catch((error) => {
+                console.error('Error posting product:', error);
+                // Handle the error if needed
+            });
+    };
 
     return (
-        <div >
+        <div>
             <Modal
                 open={open}
                 onClose={close}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}
-                     component="form"
-                     noValidate
-                     autoComplete="off"
-                >
-
-                    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontWeight: "bold" }}>
+                <Box sx={style} component="form" noValidate autoComplete="off">
+                    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontWeight: 'bold' }}>
                         Create Product
                     </Typography>
                     <div className="flex justify-between mt-4">
@@ -95,35 +95,51 @@ const ProductForm = ({ open, close }) => {
                             placeholder="Enter Product Name"
                             type="text"
                             name="name"
-                            classname={"w-[350px]"}
+                            className="w-[350px]"
+                            onChange={handleInputChange}
                         />
                         <InputGroup
                             label="Slug"
                             placeholder="Enter Product Slug"
                             type="text"
-                            name="Slug"
-                            classname={"w-[350px]"}
+                            name="slug"
+                            className="w-[350px]"
+                            onChange={handleInputChange}
                         />
                     </div>
-                    <div className="flex justify-between mt-4">
+                    <div className="flex justify-between mt-4 mb-4">
                         <InputGroup
                             label="Price"
                             placeholder="Enter Product Price"
                             type="number"
                             name="price"
-                            classname={"w-[350px]"}
+                            className="w-[350px]"
+                            onChange={handleInputChange}
                         />
                         <InputGroup
-                            label="Quote"
-                            placeholder="Enter Product Quote"
-                            type="text"
-                            name="quote"
-                            classname={"w-[350px]"}
+                            label="Quantity"
+                            placeholder="Enter Product qunatity"
+                            type="number"
+                            name="quantity"
+                            className="w-[350px]"
+                            onChange={handleInputChange}
                         />
+
                     </div>
+                    <InputGroup
+                        label="Quote"
+                        placeholder="Enter Product Quote"
+                        type="text"
+                        name="quote"
+                        onChange={handleInputChange}
+                    />
                     <div className="mt-4 flex flex-col gap-2">
                         <label className="font-medium text-[18px]">Description</label>
-                        <textarea className="border-gray-200 border-2 py-2.5 rounded px-2 w-full resize-none h-[200px]" > </textarea>
+                        <textarea
+                            className="border-gray-200 border-2 py-2.5 rounded px-2 w-full resize-none h-[200px]"
+                            onChange={handleInputChange}
+                            name="description"
+                        ></textarea>
                     </div>
                     <div className="mt-4 flex flex-col gap-2">
                         <label className="font-medium text-[18px]">Category</label>
@@ -144,7 +160,6 @@ const ProductForm = ({ open, close }) => {
                             </Select>
                         </FormControl>
                     </div>
-
                     <div className="mt-4 flex flex-col gap-2">
                         <label className="font-medium text-[18px]">Subcategory</label>
                         <FormControl fullWidth>
@@ -154,7 +169,11 @@ const ProductForm = ({ open, close }) => {
                                 id="demo-simple-select"
                                 label="Subcategory"
                                 value={selectedSubcategory}
-                                onChange={(e) => setSelectedSubcategory(e.target.value)}
+                                name="subcategory_id"
+                                onChange={(e) => {
+                                    setSelectedSubcategory(e.target.value);
+                                    handleInputChange(e); // Call handleInputChange here
+                                }}
                             >
                                 {filteredSubcategories.map((subcategory) => (
                                     <MenuItem key={subcategory.id} value={subcategory.id}>
@@ -166,11 +185,13 @@ const ProductForm = ({ open, close }) => {
                     </div>
                     <div className="mt-[30px] mb-[15px]">
                         <FormControlLabel
-                            control={<Checkbox name="hidden"  />}
+                            control={<Checkbox name="published" onChange={handleCheckboxChange} />}
+                            checked={productsData.published || false} // Provide a default value of false
                         />
-                        <label className="font-medium">If you want your Product to be publish, check this checkbox.</label>
+                        <label className="font-medium">If you want your Product to be published, check this checkbox.</label>
                     </div>
-                    <UploadImages/>
+                    <UploadImages />
+                    <button onClick={postProducts} type="button">Create Product</button>
                 </Box>
             </Modal>
         </div>
@@ -178,4 +199,3 @@ const ProductForm = ({ open, close }) => {
 };
 
 export default ProductForm;
-
