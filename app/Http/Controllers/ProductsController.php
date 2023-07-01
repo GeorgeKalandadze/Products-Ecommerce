@@ -69,6 +69,7 @@ class ProductsController extends Controller
                 ]);
             }
             DB::commit();
+            return response()->json($data);
         } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;

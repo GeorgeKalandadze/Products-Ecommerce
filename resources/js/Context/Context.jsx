@@ -6,7 +6,14 @@ const AppContext = createContext({
 });
 
 export const AppProvider = ({children}) => {
-    const [productsData, setProductsData] = useState({  });
+    const [productsData, setProductsData] = useState({
+        name:"",
+        slug:"",
+        quote:"",
+        price:null,
+        quantity:null,
+        published:0,
+        description:"" });
 
     return <AppContext.Provider value={{productsData, setProductsData}}>
         {children}

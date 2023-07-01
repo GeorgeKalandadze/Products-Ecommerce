@@ -3,7 +3,7 @@ import uploadImg from '../../assets/cloud-upload-regular-240.png';
 import ClearIcon from '@mui/icons-material/Clear';
 import {useGlobalContext} from "@/Context/Context.jsx";
 
-const UploadImages = () => {
+const UploadImages = ({error}) => {
     const wrapperRef = useRef(null);
     const [fileList, setFileList] = useState([]);
     const {productsData, setProductsData} = useGlobalContext()
@@ -57,6 +57,7 @@ const UploadImages = () => {
                     multiple
                 />
             </div>
+            <p className="text-red-600 mt-2">{error}</p>
             {fileList.length > 0 ? (
                 <div className="drop-file-preview mt-8">
                     <p className="drop-file-preview__title font-semibold mb-4">Ready to upload</p>

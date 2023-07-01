@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InputGroup = ({ label, placeholder, type, name, className = '', value, onChange }) => {
+const InputGroup = ({ label, placeholder, type, name, className = '', value, onChange, error }) => {
     return (
         <div className="flex flex-col justify-center gap-2">
             <label className="font-medium text-[18px]">{label}</label>
@@ -12,6 +12,7 @@ const InputGroup = ({ label, placeholder, type, name, className = '', value, onC
                 value={value}
                 onChange={onChange}
             />
+            <p className="text-red-600">{error && error}</p>
         </div>
     );
 };

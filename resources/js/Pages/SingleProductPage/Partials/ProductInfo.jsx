@@ -5,6 +5,7 @@ const ProductInfo = ({product}) => {
         <div className="flex gap-4 flex-col">
             <h1 className="text-[16px] text-[#008bd2] leading-10 uppercase tracking-wide font-semibold">{product.name}</h1>
             <p className="w-[400px] text-[#69707d]">{product.description} Facilis neque quia possimus. Dolorem quibusdam qui ipsum. Nisi sed omnis enim fuga porro</p>
+            <h1 className="text-[32px] font-semibold">{product.quote}</h1>
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 ">
                     <h1 className="font-black text-[28px]">${product.price}</h1>

@@ -32,7 +32,8 @@ const ProductForm = ({ open, close }) => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [filteredSubcategories, setFilteredSubcategories] = useState([]);
-    const {productsData, setProductsData} = useGlobalContext()
+    const {productsData, setProductsData} = useGlobalContext();
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         axios.get(`${window.location.protocol}//${window.location.host}/api/categories`).then((res) => {
@@ -58,16 +59,12 @@ const ProductForm = ({ open, close }) => {
 
     const handleCheckboxChange = (e) => {
         const { name, checked } = e.target;
-        const value = checked ? 1 : 0; // Convert checked value to 1 or 0
+        const value = checked ? 1 : 0;
         setProductsData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
-
-    console.log(productsData);
-
-
 
 
     const postProducts = () => {
@@ -80,13 +77,9 @@ const ProductForm = ({ open, close }) => {
         formData.append('quote', productsData.quote);
         formData.append('slug', productsData.slug);
         formData.append('subcategory_id', productsData.subcategory_id);
-
-
         productsData.images.forEach((image, index) => {
             formData.append(`images[${index}]`, image);
         });
-
-        console.log([...formData])
 
         axios
             .post(`${window.location.protocol}//${window.location.host}/api/products/create`, formData, {
@@ -95,13 +88,17 @@ const ProductForm = ({ open, close }) => {
                 },
             })
             .then((response) => {
-                console.log('Product successfully posted!', response);
+                if(response.status === 201){
+                    setErrors({})
+                }
             })
             .catch((error) => {
-                console.error('Error posting product:', error);
+                const response = error.response;
+                if (response && response.status === 422) {
+                    setErrors(response.data.errors)
+                }
             });
     };
-
 
 
     return (
@@ -124,6 +121,7 @@ const ProductForm = ({ open, close }) => {
                             name="name"
                             className="w-[350px]"
                             onChange={handleInputChange}
+                            error={errors.name?.[0]}
                         />
                         <InputGroup
                             label="Slug"
@@ -132,6 +130,7 @@ const ProductForm = ({ open, close }) => {
                             name="slug"
                             className="w-[350px]"
                             onChange={handleInputChange}
+                            error={errors.slug?.[0]}
                         />
                     </div>
                     <div className="flex justify-between mt-4 mb-4">
@@ -142,6 +141,7 @@ const ProductForm = ({ open, close }) => {
                             name="price"
                             className="w-[350px]"
                             onChange={handleInputChange}
+                            error={errors.price?.[0]}
                         />
                         <InputGroup
                             label="Quantity"
@@ -150,6 +150,7 @@ const ProductForm = ({ open, close }) => {
                             name="quantity"
                             className="w-[350px]"
                             onChange={handleInputChange}
+                            error={errors.quantity?.[0]}
                         />
 
                     </div>
@@ -159,6 +160,7 @@ const ProductForm = ({ open, close }) => {
                         type="text"
                         name="quote"
                         onChange={handleInputChange}
+                        error={errors.quote?.[0]}
                     />
                     <div className="mt-4 flex flex-col gap-2">
                         <label className="font-medium text-[18px]">Description</label>
@@ -167,6 +169,7 @@ const ProductForm = ({ open, close }) => {
                             onChange={handleInputChange}
                             name="description"
                         ></textarea>
+                        <p className="text-red-600">{errors.description?.[0]}</p>
                     </div>
                     <div className="mt-4 flex flex-col gap-2">
                         <label className="font-medium text-[18px]">Category</label>
@@ -217,7 +220,7 @@ const ProductForm = ({ open, close }) => {
                         />
                         <label className="font-medium">If you want your Product to be published, check this checkbox.</label>
                     </div>
-                    <UploadImages />
+                    <UploadImages error={errors.images?.[0]}/>
                     <button
                         onClick={postProducts}
                         type="button"
