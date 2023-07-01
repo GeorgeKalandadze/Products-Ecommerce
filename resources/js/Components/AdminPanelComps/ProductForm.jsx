@@ -75,13 +75,13 @@ const ProductForm = ({ open, close }) => {
         formData.append('name', productsData.name);
         formData.append('description', productsData.name);
         formData.append('price', productsData.price);
-        formData.append('published', JSON.stringify(productsData.published));
+        formData.append('published', productsData.published);
         formData.append('quantity', productsData.quantity);
         formData.append('quote', productsData.quote);
         formData.append('slug', productsData.slug);
         formData.append('subcategory_id', productsData.subcategory_id);
 
-        // Append the images to the FormData object
+
         productsData.images.forEach((image, index) => {
             formData.append(`images[${index}]`, image);
         });
@@ -91,16 +91,14 @@ const ProductForm = ({ open, close }) => {
         axios
             .post(`${window.location.protocol}//${window.location.host}/api/products/create`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data', // Set the correct content type
+                    'Content-Type': 'multipart/form-data',
                 },
             })
             .then((response) => {
                 console.log('Product successfully posted!', response);
-                // Do something with the response if needed
             })
             .catch((error) => {
                 console.error('Error posting product:', error);
-                // Handle the error if needed
             });
     };
 

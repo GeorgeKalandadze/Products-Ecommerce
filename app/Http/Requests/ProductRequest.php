@@ -22,8 +22,8 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'max:2000'],
-            'slug' => ['required', 'max:2000'],
+            'name' => ['required', 'max:2000','string'],
+            'slug' => ['required', 'max:2000','string'],
             'quote' => ['required', 'string'],
             'price' => ['required', 'numeric'],
             'description' => ['required', 'string'],
