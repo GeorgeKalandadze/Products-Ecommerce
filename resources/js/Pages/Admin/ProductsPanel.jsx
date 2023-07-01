@@ -15,7 +15,7 @@ const ProductsPanel = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [openCreateProduct, setOpenCreateProduct] = useState(false);
     const open = Boolean(anchorEl);
-    const products = props.products
+    const [products, setProducts] = useState(props.products)
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -27,13 +27,14 @@ const ProductsPanel = (props) => {
         axios
             .delete(`${window.location.protocol}//${window.location.host}/api/products/${productId}`)
             .then((response) => {
-                console.log('Product deleted successfully');
-
+                const deletedIndex = products.findIndex((product) => product.id === productId);
+                const updatedProducts = [...products];
+                updatedProducts.splice(deletedIndex, 1);
+                setProducts(updatedProducts);
             })
             .catch((error) => {
                 // Handle error
                 console.error('Error deleting product:', error);
-                // Display error message or perform any necessary actions
             });
     };
 
@@ -42,7 +43,12 @@ const ProductsPanel = (props) => {
 
     return (
         <AdminPanelLayout>
-          <ProductForm open={openCreateProduct} close={() => setOpenCreateProduct(false)}/>
+          <ProductForm
+              open={openCreateProduct}
+              close={() => setOpenCreateProduct(false)}
+              products = {products}
+              setProducts = {setProducts}
+          />
             <section className="p-[16px]">
                 <div className="flex justify-between items-center">
                     <h1 className="font-bold text-[30px]">Products</h1>

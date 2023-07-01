@@ -27,7 +27,7 @@ const style = {
     scrollbarColor: '#888 transparent',
 };
 
-const ProductForm = ({ open, close }) => {
+const ProductForm = ({ open, close, products, setProducts }) => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
@@ -88,9 +88,8 @@ const ProductForm = ({ open, close }) => {
                 },
             })
             .then((response) => {
-                if(response.status === 201){
-                    setErrors({})
-                }
+                console.log(response)
+                setProducts(response.data)
             })
             .catch((error) => {
                 const response = error.response;

@@ -14,9 +14,7 @@ use Exception;
 
 class ProductsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         $products = Product::with('productImages')->get();
@@ -39,6 +37,7 @@ class ProductsController extends Controller
     public function store(ProductRequest $request)
     {
         try {
+            $products = Product::with('productImages')->get();
             DB::beginTransaction();
             $data = $request->validated();
             $product = Product::create([
@@ -68,7 +67,7 @@ class ProductsController extends Controller
                 ]);
             }
             DB::commit();
-            return response()->json($data);
+            return response()->json( $products);
         } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
@@ -110,9 +109,10 @@ class ProductsController extends Controller
      */
     public function destroy(string $id)
     {
+
         $product = Product::find($id);
         $product->productImages()->delete();
         $product->delete();
-        return response()->json('product is deleted');
+        return response()->json('deleted product');
     }
 }
