@@ -20,7 +20,6 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Product::with('productImages')->get();
-
         return Inertia::render('Product/Products',[
             'products' => $products->toJson()
         ]);
@@ -111,6 +110,9 @@ class ProductsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::find($id);
+        $product->productImages()->delete();
+        $product->delete();
+        return response()->json('product is deleted');
     }
 }

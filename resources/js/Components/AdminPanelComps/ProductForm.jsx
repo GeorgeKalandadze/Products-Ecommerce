@@ -70,7 +70,7 @@ const ProductForm = ({ open, close }) => {
     const postProducts = () => {
         const formData = new FormData();
         formData.append('name', productsData.name);
-        formData.append('description', productsData.name);
+        formData.append('description', productsData.description);
         formData.append('price', productsData.price);
         formData.append('published', productsData.published);
         formData.append('quantity', productsData.quantity);

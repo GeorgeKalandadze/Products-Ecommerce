@@ -24,4 +24,5 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/categories',GetCategoriesController::class);
 Route::get('/{categoryId}/{subcategoryId}', SubcategoryController::class);
 Route::post('/products/create',[ProductsController::class, 'store']);
+Route::delete('/products/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
 

@@ -10,17 +10,34 @@ import ProductForm from "@/Components/AdminPanelComps/ProductForm.jsx";
 
 
 
-const ProductsPanel = () => {
+const ProductsPanel = (props) => {
     const options = [10, 20, 30, 40, 50];
     const [anchorEl, setAnchorEl] = useState(null);
     const [openCreateProduct, setOpenCreateProduct] = useState(false);
     const open = Boolean(anchorEl);
+    const products = props.products
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const deleteProduct = (productId) => {
+        axios
+            .delete(`${window.location.protocol}//${window.location.host}/api/products/${productId}`)
+            .then((response) => {
+                console.log('Product deleted successfully');
+
+            })
+            .catch((error) => {
+                // Handle error
+                console.error('Error deleting product:', error);
+                // Display error message or perform any necessary actions
+            });
+    };
+
+
 
 
     return (
@@ -60,48 +77,51 @@ const ProductsPanel = () => {
                             <th>Actions</th>
                         </thead>
                         <tbody>
-                        <tr className="text-center mt-4 border-b-2 ">
-                            <td>1</td>
-                            <td className="flex justify-center items-center py-2 ">
-                                <img src={ProductImg} className="w-[100px]"/>
-                            </td>
-                            <td>some name</td>
-                            <td>69.69$</td>
-                            <td>2023-06-23 17:57:19</td>
-                            <td>
-                                <IconButton
-                                    aria-label="more"
-                                    id="long-button"
-                                    aria-controls={open ? 'long-menu' : undefined}
-                                    aria-expanded={open ? 'true' : undefined}
-                                    aria-haspopup="true"
-                                    onClick={handleClick}
-                                >
-                                    <MoreVertIcon sx={{color:"#818cf8"}}/>
-                                </IconButton >
-                                <Menu
-                                    id="long-menu"
-                                    MenuListProps={{
-                                        'aria-labelledby': 'long-button',
-                                    }}
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
-                                    PaperProps={{
-                                        style: {
-                                            maxHeight: 48 * 4.5,
-                                        },
-                                    }}
-                                >
-                                    <MenuItem   onClick={handleClose} >
-                                        <EditIcon sx={{color:"#818cf8", marginRight:"10px"}}/> Edit
-                                    </MenuItem>
-                                    <MenuItem   onClick={handleClose}>
-                                        <DeleteIcon sx={{color:"#818cf8", marginRight:"10px"}}/> Delete
-                                    </MenuItem>
-                                </Menu>
-                            </td>
-                        </tr>
+                        {products.map((product) => (
+                            <tr className="text-center mt-4 border-b-2 ">
+                                <td>{product.id}</td>
+                                <td className="flex justify-center items-center py-2 ">
+                                    <img src={product.product_images[0].path} className="w-[100px] h-[80px]"/>
+                                </td>
+                                <td>{product.name}</td>
+                                <td>{product.price}$</td>
+                                <td>{product.updated_at}</td>
+                                <td>
+                                    <IconButton
+                                        aria-label="more"
+                                        id="long-button"
+                                        aria-controls={open ? 'long-menu' : undefined}
+                                        aria-expanded={open ? 'true' : undefined}
+                                        aria-haspopup="true"
+                                        onClick={handleClick}
+                                    >
+                                        <MoreVertIcon sx={{color:"#818cf8"}}/>
+                                    </IconButton >
+                                    <Menu
+                                        id="long-menu"
+                                        MenuListProps={{
+                                            'aria-labelledby': 'long-button',
+                                        }}
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleClose}
+                                        PaperProps={{
+                                            style: {
+                                                maxHeight: 48 * 4.5,
+                                            },
+                                        }}
+                                    >
+                                        <MenuItem   onClick={handleClose} >
+                                            <EditIcon sx={{color:"#818cf8", marginRight:"10px"}}/> Edit
+                                        </MenuItem>
+                                        <MenuItem   onClick={() => deleteProduct(product.id)}>
+                                            <DeleteIcon sx={{color:"#818cf8", marginRight:"10px"}}/> Delete
+                                        </MenuItem>
+                                    </Menu>
+                                </td>
+                            </tr>
+                        ))}
+
                         </tbody>
                     </table>
                     <div className="mt-6">
