@@ -8,6 +8,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ProductForm from "@/Components/AdminPanelComps/ProductForm.jsx";
 import {useGlobalContext} from "@/Context/Context.jsx";
 import axios from "axios";
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 
 
@@ -18,9 +20,11 @@ const ProductsPanel = (props) => {
     const [openCreateProduct, setOpenCreateProduct] = useState(false);
     const open = Boolean(anchorEl);
     const [products, setProducts] = useState(props.products.data)
-    const {setProductsData, selectedProduct, setSelectedProduct} = useGlobalContext()
+    const {setSelectedProduct} = useGlobalContext()
     const [searchQuery, setSearchQuery] = useState('');
     const [paginate, setPaginate] = useState(5);
+    const [sortField, setSortField] = useState('updated_at');
+    const [sortDirection, setSortDirection] = useState('desc');
 
     const handleClick = (event, index) => {
         const newAnchorElArray = [...anchorEl];
@@ -34,18 +38,29 @@ const ProductsPanel = (props) => {
         setAnchorEl(newAnchorElArray);
     };
 
+    const handleSort = (field) => {
+        if (field === sortField) {
+            setSortDirection(sortDirection === 'desc' ? 'asc' : 'desc');
+        } else {
+            setSortField(field);
+            setSortDirection('asc');
+        }
+    };
+
     useEffect(() => {
         axios
             .get(`${window.location.protocol}//${window.location.host}/api/products`, {
                 params: {
                     search: searchQuery,
-                    per_page: paginate
+                    per_page: paginate,
+                    sort_field: sortField,
+                    sort_direction: sortDirection,
                 },
             })
             .then((res) => {
                 setProducts(res.data.data);
             });
-    }, [searchQuery,paginate]);
+    }, [searchQuery, paginate, sortField, sortDirection]);
 
     const deleteProduct = (productId) => {
         axios
@@ -113,12 +128,22 @@ const ProductsPanel = (props) => {
                     </div>
                     <table className="mt-6 w-full ">
                         <thead className="bg-white border-b-2 border-t-2 ">
-                            <th className="py-[15px]">ID</th>
-                            <th>Image</th>
-                            <th>Title</th>
-                            <th>Price</th>
-                            <th>Last Updated At</th>
-                            <th>Actions</th>
+                        <th className="py-[15px] cursor-pointer" onClick={() => handleSort('id')}>
+                            ID {sortField === 'id' && (sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />)}
+                        </th>
+                        <th className="cursor-pointer">
+                            Image
+                        </th>
+                        <th className="cursor-pointer" onClick={() => handleSort('title')}>
+                            Title {sortField === 'title' && (sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />)}
+                        </th>
+                        <th className="cursor-pointer" onClick={() => handleSort('price')}>
+                            Price {sortField === 'price' && (sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />)}
+                        </th>
+                        <th className="cursor-pointer" onClick={() => handleSort('updated_at')}>
+                            Last Updated At {sortField === 'updated_at' && (sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />)}
+                        </th>
+                        <th>Actions</th>
                         </thead>
                         <tbody>
                         {products.length > 0 &&  products.map((product,index) => (
