@@ -1,27 +1,51 @@
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout.jsx";
-import ProductImg from '../../assets/laptop.jpg'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import IconButton from '@mui/material/IconButton';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Menu, MenuItem} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ProductForm from "@/Components/AdminPanelComps/ProductForm.jsx";
+import {useGlobalContext} from "@/Context/Context.jsx";
+import axios from "axios";
 
 
 
 const ProductsPanel = (props) => {
-    const options = [10, 20, 30, 40, 50];
-    const [anchorEl, setAnchorEl] = useState(null);
+
+    const options = [5, 10, 30, 40, 50];
+    const [anchorEl, setAnchorEl] = useState([]);
     const [openCreateProduct, setOpenCreateProduct] = useState(false);
     const open = Boolean(anchorEl);
-    const [products, setProducts] = useState(props.products)
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+    const [products, setProducts] = useState(props.products.data)
+    const {setProductsData, selectedProduct, setSelectedProduct} = useGlobalContext()
+    const [searchQuery, setSearchQuery] = useState('');
+    const [paginate, setPaginate] = useState(5);
+
+    const handleClick = (event, index) => {
+        const newAnchorElArray = [...anchorEl];
+        newAnchorElArray[index] = event.currentTarget;
+        setAnchorEl(newAnchorElArray);
     };
-    const handleClose = () => {
-        setAnchorEl(null);
+
+    const handleClose = (index) => {
+        const newAnchorElArray = [...anchorEl];
+        newAnchorElArray[index] = null;
+        setAnchorEl(newAnchorElArray);
     };
+
+    useEffect(() => {
+        axios
+            .get(`${window.location.protocol}//${window.location.host}/api/products`, {
+                params: {
+                    search: searchQuery,
+                    per_page: paginate
+                },
+            })
+            .then((res) => {
+                setProducts(res.data.data);
+            });
+    }, [searchQuery,paginate]);
 
     const deleteProduct = (productId) => {
         axios
@@ -33,10 +57,16 @@ const ProductsPanel = (props) => {
                 setProducts(updatedProducts);
             })
             .catch((error) => {
-                // Handle error
                 console.error('Error deleting product:', error);
             });
     };
+
+
+    const editProduct = (product) => {
+        setOpenCreateProduct(true)
+        setSelectedProduct(product)
+    }
+
 
 
 
@@ -52,13 +82,19 @@ const ProductsPanel = (props) => {
             <section className="p-[16px]">
                 <div className="flex justify-between items-center">
                     <h1 className="font-bold text-[30px]">Products</h1>
-                    <button className="bg-[#423dce] text-white px-6 py-2.5 rounded font-bold" onClick={() => setOpenCreateProduct(true)}>Add New Product</button>
+                    <button className="bg-[#423dce] text-white px-6 py-2.5 rounded font-bold" onClick={() => {setOpenCreateProduct(true), setSelectedProduct(null)}}>Add New Product</button>
                 </div>
                 <div className="p-4 rounded-[8px]  bg-[#f3f4f6] mt-6 min-h-screen">
                     <div className="flex justify-between">
                         <div className="flex items-center gap-4">
                             <p className="font-medium">Per page</p>
-                            <select id="quantity" defaultValue="10" className="border-none rounded outline-none">
+                            <select
+                                    id="quantity"
+                                    defaultValue="10"
+                                    className="border-none rounded outline-none"
+                                    onChange={(event) => setPaginate(event.target.value)}
+                                    value={paginate}
+                            >
                                 {options.map((option) => (
                                     <option key={option} value={option} className="border-none">
                                         {option}
@@ -71,6 +107,8 @@ const ProductsPanel = (props) => {
                             type="search"
                             className="border-none rounded .placeholder-gray-500 px-6"
                             placeholder="Type to search product"
+                            value={searchQuery}
+                            onChange={(event) => setSearchQuery(event.target.value)}
                         />
                     </div>
                     <table className="mt-6 w-full ">
@@ -83,11 +121,11 @@ const ProductsPanel = (props) => {
                             <th>Actions</th>
                         </thead>
                         <tbody>
-                        {products.map((product) => (
+                        {products.length > 0 &&  products.map((product,index) => (
                             <tr className="text-center mt-4 border-b-2 ">
                                 <td>{product.id}</td>
                                 <td className="flex justify-center items-center py-2 ">
-                                    <img src={product.product_images[0].path} className="w-[100px] h-[80px]"/>
+                                    <img src={product.product_images[0]?.name} className="w-[100px] h-[80px]"/>
                                 </td>
                                 <td>{product.name}</td>
                                 <td>{product.price}$</td>
@@ -99,25 +137,26 @@ const ProductsPanel = (props) => {
                                         aria-controls={open ? 'long-menu' : undefined}
                                         aria-expanded={open ? 'true' : undefined}
                                         aria-haspopup="true"
-                                        onClick={handleClick}
+                                        onClick={(event) => handleClick(event, index)}
                                     >
                                         <MoreVertIcon sx={{color:"#818cf8"}}/>
                                     </IconButton >
                                     <Menu
-                                        id="long-menu"
+
                                         MenuListProps={{
                                             'aria-labelledby': 'long-button',
                                         }}
-                                        anchorEl={anchorEl}
-                                        open={open}
-                                        onClose={handleClose}
+                                        id={`menu-${product.id}`}
+                                        anchorEl={anchorEl[index]}
+                                        open={Boolean(anchorEl[index])}
+                                        onClose={() => handleClose(index)}
                                         PaperProps={{
                                             style: {
                                                 maxHeight: 48 * 4.5,
                                             },
                                         }}
                                     >
-                                        <MenuItem   onClick={handleClose} >
+                                        <MenuItem   onClick={() => editProduct(product)} >
                                             <EditIcon sx={{color:"#818cf8", marginRight:"10px"}}/> Edit
                                         </MenuItem>
                                         <MenuItem   onClick={() => deleteProduct(product.id)}>

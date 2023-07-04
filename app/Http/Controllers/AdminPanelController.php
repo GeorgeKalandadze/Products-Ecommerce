@@ -12,15 +12,25 @@ class AdminPanelController extends Controller
 {
     public function renderAdminPanel(): Response
     {
-
         return Inertia::render('Admin/AdminPanel');
     }
 
     public function renderProductPanel(): Response
     {
+        $perPage = request('per_page', 10);
+        $search = request('search', '');
+        $sortField = request('sort_field', 'id');
+        $sortDirection = request('sort_direction', 'asc');
+
+        $query = Product::query()
+            ->where('name', 'like', "%{$search}%")
+            ->orderBy($sortField, $sortDirection)
+            ->with('productImages')
+            ->paginate($perPage);
+
         $products = Product::with('productImages')->get();
         return Inertia::render('Admin/ProductsPanel', [
-            'products' => $products
+            'products' => $query
         ]);
     }
 

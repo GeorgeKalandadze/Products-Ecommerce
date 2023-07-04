@@ -14,9 +14,11 @@ use Exception;
 
 class ProductsController extends Controller
 {
-    
+
     public function index()
     {
+
+
         $products = Product::with('productImages')->get();
         return Inertia::render('Product/Products',[
             'products' => $products->toJson()
@@ -37,7 +39,7 @@ class ProductsController extends Controller
     public function store(ProductRequest $request)
     {
         try {
-            $products = Product::with('productImages')->get();
+
             DB::beginTransaction();
             $data = $request->validated();
             $product = Product::create([
@@ -50,24 +52,23 @@ class ProductsController extends Controller
                 'price' => $data['price'],
                 'subcategory_id' => $data['subcategory_id']
             ]);
-
-            $images = $request->file('images');
-
-            if (count($images) !== 4) {
-                throw new \Exception('Please upload exactly 4 images.');
-            }
-
+            $images = $data['images'];
             foreach ($images as $index => $image) {
-                $imageName = $product->id . '_' . time() . '_' . $index . '.' . $image->getClientOriginalName();
+                $imageName = $product->id  . time()  . $index . $image->getClientOriginalName();
                 $image->storeAs('public/product_images', $imageName);
 
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'path' => env('APP_URL').Storage::url('product_images/' . $imageName)
+                    'name' => env('APP_URL').Storage::url('product_images/' . $imageName),
+//                    'name' => $imageName,
+                    'size' => $image->getSize(),
+                    'type' => $image->getMimeType(),
                 ]);
             }
             DB::commit();
-            return response()->json( $products);
+            $product->load('productImages');
+
+            return response()->json($product);
         } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
@@ -88,6 +89,22 @@ class ProductsController extends Controller
 
     }
 
+    public function getAllProducts(){
+
+        $perPage = request('per_page', 5);
+        $search = request('search', '');
+        $sortField = request('sort_field', 'id');
+        $sortDirection = request('sort_direction', 'asc');
+
+        $query = Product::query()
+            ->where('name', 'like', "%{$search}%")
+            ->orderBy($sortField, $sortDirection)
+            ->with('productImages')
+            ->paginate($perPage);
+       $products = Product::with('productImages')->get();
+        return response()->json( $query );
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -96,23 +113,62 @@ class ProductsController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    public function update(ProductRequest $request, $id)
     {
-        //
+        try {
+            $data = $request->validated();
+            $product = Product::find($id);
+
+            $product->update($data);
+            if (isset($data['images'])) {
+                $existingImages = $product->productImages;
+                $newImages = $data['images'];
+                foreach ($existingImages as $existingImage) {
+                    Storage::delete($existingImage->name);
+                    $existingImage->delete();
+                }
+                foreach ($newImages as $index => $image) {
+                    $imageName = $product->id  . time()  . $index  . $image->getClientOriginalName();
+                    $imageName =  $image->getClientOriginalName();
+                    $image->storeAs('public/product_images', $imageName);
+
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'name' => env('APP_URL').Storage::url('product_images/' . $imageName),
+//                        'name' => $imageName,
+                        'size' => $image->getSize(),
+                        'type' => $image->getMimeType(),
+                    ]);
+                }
+            }
+
+            // Reload product with updated images
+            $product->load('productImages');
+
+            return response()->json($product);
+        } catch (ValidationException $e) {
+            return response()->json($e->errors(), 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error occurred during the update process.'], 500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-
         $product = Product::find($id);
+        $imageUrls = $product->productImages()->pluck('name');
+
+        foreach ($imageUrls as $imageUrl) {
+            Storage::disk('public')->delete($imageUrl);
+        }
         $product->productImages()->delete();
         $product->delete();
+
         return response()->json('deleted product');
     }
 }

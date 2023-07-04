@@ -27,19 +27,36 @@ const style = {
     scrollbarColor: '#888 transparent',
 };
 
-const ProductForm = ({ open, close, products, setProducts }) => {
+const ProductForm = ({ open, close, products, setProducts}) => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [filteredSubcategories, setFilteredSubcategories] = useState([]);
-    const {productsData, setProductsData} = useGlobalContext();
+    const {productsData, setProductsData, selectedProduct} = useGlobalContext();
     const [errors, setErrors] = useState({});
+
 
     useEffect(() => {
         axios.get(`${window.location.protocol}//${window.location.host}/api/categories`).then((res) => {
+            console.log(res)
             setCategories(res.data);
         });
     }, []);
+
+    useEffect(() => {
+        if(selectedProduct){
+            setProductsData(selectedProduct)
+        }else{
+            setProductsData({
+                name:"",
+                slug:"",
+                quote:"",
+                price:"",
+                quantity:"",
+                published:0,
+                description:"" })
+        }
+    },[selectedProduct])
 
     const handleCategoryChange = (e) => {
         const selectedCategoryId = e.target.value;
@@ -65,8 +82,7 @@ const ProductForm = ({ open, close, products, setProducts }) => {
             [name]: value,
         }));
     };
-
-
+    console.log(productsData.images,"imagessssssssssssss")
     const postProducts = () => {
         const formData = new FormData();
         formData.append('name', productsData.name);
@@ -78,26 +94,47 @@ const ProductForm = ({ open, close, products, setProducts }) => {
         formData.append('slug', productsData.slug);
         formData.append('subcategory_id', productsData.subcategory_id);
         productsData.images.forEach((image, index) => {
-            formData.append(`images[${index}]`, image);
+                formData.append(`images[${index}]`, new File([image], image.name, { type: "image", }));
         });
 
-        axios
-            .post(`${window.location.protocol}//${window.location.host}/api/products/create`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
+
+        console.log([...formData],"formdata")
+
+        const requestMethod = selectedProduct ? axios.post : axios.post;
+        const requestUrl = selectedProduct
+            ? `${window.location.protocol}//${window.location.host}/api/products/update/${selectedProduct.id}`
+            : `${window.location.protocol}//${window.location.host}/api/products/create`;
+
+        requestMethod(requestUrl, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
             .then((response) => {
-                console.log(response)
-                setProducts(response.data)
+                if (selectedProduct) {
+                    // Handle update success
+                    const updatedProduct = response.data;
+                    setProducts((prevProducts) =>
+                        prevProducts.map((product) => (product.id === updatedProduct.id ? updatedProduct : product))
+                    );
+                } else {
+                    // Handle create success
+                    const createdProduct = response.data;
+                    setProducts((prevProducts) => [...prevProducts, createdProduct]);
+                }
+                setErrors({});
             })
             .catch((error) => {
                 const response = error.response;
                 if (response && response.status === 422) {
-                    setErrors(response.data.errors)
+                    setErrors(response.data.errors);
                 }
             });
     };
+
+
+
+
 
 
     return (
@@ -110,7 +147,7 @@ const ProductForm = ({ open, close, products, setProducts }) => {
             >
                 <Box sx={style} component="form" noValidate autoComplete="off">
                     <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontWeight: 'bold' }}>
-                        Create Product
+                        {selectedProduct?"Edit":"Create"}  Product
                     </Typography>
                     <div className="flex justify-between mt-4">
                         <InputGroup
@@ -121,6 +158,8 @@ const ProductForm = ({ open, close, products, setProducts }) => {
                             className="w-[350px]"
                             onChange={handleInputChange}
                             error={errors.name?.[0]}
+                            value={productsData.name}
+
                         />
                         <InputGroup
                             label="Slug"
@@ -130,6 +169,7 @@ const ProductForm = ({ open, close, products, setProducts }) => {
                             className="w-[350px]"
                             onChange={handleInputChange}
                             error={errors.slug?.[0]}
+                            value={productsData.slug}
                         />
                     </div>
                     <div className="flex justify-between mt-4 mb-4">
@@ -141,6 +181,7 @@ const ProductForm = ({ open, close, products, setProducts }) => {
                             className="w-[350px]"
                             onChange={handleInputChange}
                             error={errors.price?.[0]}
+                            value={productsData.price}
                         />
                         <InputGroup
                             label="Quantity"
@@ -150,6 +191,7 @@ const ProductForm = ({ open, close, products, setProducts }) => {
                             className="w-[350px]"
                             onChange={handleInputChange}
                             error={errors.quantity?.[0]}
+                            value={productsData.quantity}
                         />
 
                     </div>
@@ -160,6 +202,7 @@ const ProductForm = ({ open, close, products, setProducts }) => {
                         name="quote"
                         onChange={handleInputChange}
                         error={errors.quote?.[0]}
+                        value={productsData.quote}
                     />
                     <div className="mt-4 flex flex-col gap-2">
                         <label className="font-medium text-[18px]">Description</label>
@@ -167,6 +210,7 @@ const ProductForm = ({ open, close, products, setProducts }) => {
                             className="border-gray-200 border-2 py-2.5 rounded px-2 w-full resize-none h-[200px]"
                             onChange={handleInputChange}
                             name="description"
+                            value={productsData.description}
                         ></textarea>
                         <p className="text-red-600">{errors.description?.[0]}</p>
                     </div>
@@ -225,7 +269,7 @@ const ProductForm = ({ open, close, products, setProducts }) => {
                         type="button"
                         className="mt-6 bg-[#423dce] text-white px-6 py-3 font-medium rounded"
                     >
-                        Create Product
+                        {selectedProduct?"Edit":"Create"} Product
                     </button>
                 </Box>
             </Modal>

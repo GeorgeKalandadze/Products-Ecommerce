@@ -2,22 +2,25 @@ import React, { useRef, useState, useEffect } from 'react';
 import uploadImg from '../../assets/cloud-upload-regular-240.png';
 import ClearIcon from '@mui/icons-material/Clear';
 import {useGlobalContext} from "@/Context/Context.jsx";
+import {p} from "../../../../public/build/assets/transition-61d28e4c.js";
 
 const UploadImages = ({error}) => {
     const wrapperRef = useRef(null);
     const [fileList, setFileList] = useState([]);
-    const {productsData, setProductsData} = useGlobalContext()
+    const { productsData, setProductsData, selectedProduct } = useGlobalContext();
+
+    useEffect(() => {
+        if (selectedProduct) {
+            setFileList(selectedProduct.product_images);
+        } else {
+            setFileList([]);
+        }
+    }, [selectedProduct]);
 
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
     const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
     const onDrop = () => wrapperRef.current.classList.remove('dragover');
 
-    useEffect(() => {
-        setProductsData((prevData) => ({
-            ...prevData,
-            'images': fileList
-        }))
-    },[fileList])
     const onFileDrop = (e) => {
         const newFiles = Array.from(e.target.files);
         if (newFiles.length > 0) {
@@ -30,10 +33,25 @@ const UploadImages = ({error}) => {
         }
     };
 
+
+
+// Update productsData whenever fileList changes
+    useEffect(() => {
+        setProductsData((prevData) => ({
+            ...prevData,
+            images: fileList,
+        }));
+    }, [fileList]);
+
+    console.log(fileList, 'filelist');
+
+
     const fileRemove = (file) => {
         const updatedList = fileList.filter((item) => item !== file);
         setFileList(updatedList);
     };
+
+    console.log(fileList,"filelist")
 
     return (
         <>
@@ -69,7 +87,7 @@ const UploadImages = ({error}) => {
                             <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded overflow-hidden">
                                 <img
-                                    src={URL.createObjectURL(item)}
+                                    src={selectedProduct ?  item.name :URL.createObjectURL(item)}
                                     alt=""
                                     className="w-full h-full object-cover"
                                 />
@@ -93,3 +111,4 @@ const UploadImages = ({error}) => {
 export default UploadImages;
 
 
+//`http://localhost:8000/storage/product_images/${item.name}`

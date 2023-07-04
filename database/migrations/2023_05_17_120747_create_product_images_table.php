@@ -16,7 +16,9 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignIdFor(\App\Models\Product::class, 'created_by')->nullable();
             $table->foreignIdFor(\App\Models\Product::class, 'updated_by')->nullable();
-            $table->string('path')->nullable();
+            $table->string('name')->nullable();
+            $table->integer('size')->nullable();
+            $table->string('type')->nullable();
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')
                 ->references('id')

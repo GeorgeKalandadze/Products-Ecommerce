@@ -30,7 +30,7 @@ class ProductRequest extends FormRequest
             'published' => ['boolean'],
             'quantity' => ['required', 'numeric', 'integer', 'min:0'],
             'subcategory_id' => ['nullable'],
-            'images' => ['required'],
+            'images' => ['required', 'array', 'size:4'],
             'images.*' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048']
         ];
     }

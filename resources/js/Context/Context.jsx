@@ -14,8 +14,13 @@ export const AppProvider = ({children}) => {
         quantity:null,
         published:0,
         description:"" });
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
-    return <AppContext.Provider value={{productsData, setProductsData}}>
+    return <AppContext.Provider value={{
+        productsData,
+        setProductsData,
+        selectedProduct,
+        setSelectedProduct}}>
         {children}
     </AppContext.Provider>
 }
