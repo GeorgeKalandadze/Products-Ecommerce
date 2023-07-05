@@ -101,8 +101,6 @@ const ProductForm = ({ open, close, products, setProducts}) => {
         productsData.images.forEach((image, index) => {
             formData.append(`images[${index}]`, new File([image], image.name, { type: "image/jpg" }));
         });
-
-
         console.log([...formData],"formdata")
 
         const requestMethod = selectedProduct ? axios.post : axios.post;
