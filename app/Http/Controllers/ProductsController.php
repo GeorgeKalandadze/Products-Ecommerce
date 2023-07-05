@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductUpdateRequest;
+use App\Http\Requests\ProductUpdateRequestRequest;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
@@ -114,7 +116,7 @@ class ProductsController extends Controller
     }
 
 
-    public function update(ProductRequest $request, $id)
+    public function update(ProductUpdateRequest $request, $id)
     {
 
         try {
