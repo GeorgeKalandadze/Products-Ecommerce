@@ -9,14 +9,14 @@ const ImagesSection = ({images}) => {
                 {images.map((image) => (
                     <img
                         key={image.id}
-                        src={image.path}
+                        src={`${image.path}`}
                         className="w-[90px] h-[90px] cursor-pointer rounded"
                         onClick={() => setProductImage(image.path)}
                     />
                 ))}
             </div>
             <div>
-                <img src={productImage} className="rounded"/>
+                <img  src={productImage} className="rounded w-[700px] h-[500px]"/>
             </div>
         </div>
     );

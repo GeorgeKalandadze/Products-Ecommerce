@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\GetCategoriesController;
 use \App\Http\Controllers\SubcategoryController;
+use \App\Http\Controllers\ProductsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +22,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 Route::get('/categories',GetCategoriesController::class);
+Route::get('/products',[ProductsController::class, 'getAllProducts']);
 Route::get('/{categoryId}/{subcategoryId}', SubcategoryController::class);
+Route::post('/products/create',[ProductsController::class, 'store']);
+Route::post('/products/update/{id}',[ProductsController::class, 'update'])->name('products.update');
+Route::delete('/products/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
+

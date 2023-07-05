@@ -1,10 +1,21 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import uploadImg from '../../assets/cloud-upload-regular-240.png';
 import ClearIcon from '@mui/icons-material/Clear';
+import {useGlobalContext} from "@/Context/Context.jsx";
+import {p} from "../../../../public/build/assets/transition-61d28e4c.js";
 
-const UploadImages = () => {
+const UploadImages = ({error}) => {
     const wrapperRef = useRef(null);
     const [fileList, setFileList] = useState([]);
+    const { productsData, setProductsData, selectedProduct } = useGlobalContext();
+
+    useEffect(() => {
+        if (selectedProduct) {
+            setFileList(selectedProduct.product_images);
+        } else {
+            setFileList([]);
+        }
+    }, [selectedProduct]);
 
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
     const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
@@ -15,13 +26,32 @@ const UploadImages = () => {
         if (newFiles.length > 0) {
             const updatedList = [...fileList, ...newFiles];
             setFileList(updatedList);
+            setProductsData((prevData) => ({
+                ...prevData,
+                images: updatedList,
+            }));
         }
     };
+
+
+
+// Update productsData whenever fileList changes
+    useEffect(() => {
+        setProductsData((prevData) => ({
+            ...prevData,
+            images: fileList,
+        }));
+    }, [fileList]);
+
+    console.log(fileList, 'filelist');
+
 
     const fileRemove = (file) => {
         const updatedList = fileList.filter((item) => item !== file);
         setFileList(updatedList);
     };
+
+    console.log(fileList,"filelist")
 
     return (
         <>
@@ -45,6 +75,7 @@ const UploadImages = () => {
                     multiple
                 />
             </div>
+            <p className="text-red-600 mt-2">{error}</p>
             {fileList.length > 0 ? (
                 <div className="drop-file-preview mt-8">
                     <p className="drop-file-preview__title font-semibold mb-4">Ready to upload</p>
@@ -56,7 +87,7 @@ const UploadImages = () => {
                             <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded overflow-hidden">
                                 <img
-                                    src={URL.createObjectURL(item)}
+                                    src={selectedProduct ?  item.name :URL.createObjectURL(item)}
                                     alt=""
                                     className="w-full h-full object-cover"
                                 />
@@ -80,3 +111,4 @@ const UploadImages = () => {
 export default UploadImages;
 
 
+//`http://localhost:8000/storage/product_images/${item.name}`

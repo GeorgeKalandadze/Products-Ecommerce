@@ -25,7 +25,7 @@ class ProductFactory extends Factory
             'is_new' => $this->faker->boolean,
             'quantity' => $this->faker->numberBetween(0, 100),
             'description' => $this->faker->paragraph,
-            'cart_image' => $this->faker->imageUrl(), // Generate a random image URL
+//            'cart_image' => $this->faker->imageUrl(), // Generate a random image URL
             'price' => $this->faker->randomFloat(2, 0, 1000),
             'subcategory_id' => SubCategory::inRandomOrder()->first()->id,
         ];

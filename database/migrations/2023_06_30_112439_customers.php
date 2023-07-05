@@ -13,14 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('user_id');
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('email');
-            $table->char('phone');
-            $table->char('address');
-            $table->integer('zip_code');
-            $table->string('city');
+            $table->string('phone')->nullable();
             $table->string('status', 45)->nullable();
             $table->timestamps();
             $table->foreignIdFor(User::class, 'created_by')->nullable();
@@ -36,3 +32,4 @@ return new class extends Migration
         Schema::dropIfExists('customers');
     }
 };
+

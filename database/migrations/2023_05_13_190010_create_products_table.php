@@ -18,7 +18,8 @@ return new class extends Migration
             $table->boolean('is_new');
             $table->integer('quantity');
             $table->text('description');
-            $table->string('cart_image')->nullable();
+            $table->string('quote')->nullable();
+            $table->boolean('published')->default(false);
             $table->decimal('price');
             $table->timestamps();
         });
