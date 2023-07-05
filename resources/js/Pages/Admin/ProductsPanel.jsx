@@ -200,7 +200,6 @@ const ProductsPanel = (props) => {
                         </div>
                     </div>
                 </div>
-
             </section>
         </AdminPanelLayout>
     )

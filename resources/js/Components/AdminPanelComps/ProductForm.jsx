@@ -35,6 +35,11 @@ const ProductForm = ({ open, close, products, setProducts}) => {
     const {productsData, setProductsData, selectedProduct} = useGlobalContext();
     const [errors, setErrors] = useState({});
 
+    useEffect(() => {
+        if(close){
+            setErrors({});
+        }
+    },[close])
 
     useEffect(() => {
         axios.get(`${window.location.protocol}//${window.location.host}/api/categories`).then((res) => {
@@ -94,7 +99,7 @@ const ProductForm = ({ open, close, products, setProducts}) => {
         formData.append('slug', productsData.slug);
         formData.append('subcategory_id', productsData.subcategory_id);
         productsData.images.forEach((image, index) => {
-                formData.append(`images[${index}]`, new File([image], image.name, { type: "image", }));
+            formData.append(`images[${index}]`, new File([image], image.name, { type: "image/jpg" }));
         });
 
 
