@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\GetCategoriesController;
 use \App\Http\Controllers\SubcategoryController;
 use \App\Http\Controllers\ProductsController;
-
+use \App\Http\Controllers\CartController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,8 +19,8 @@ use \App\Http\Controllers\ProductsController;
 
 Route::middleware('auth:sanctum')->group(function () {
 
-
 });
+Route::post('cart/add', [CartController::class,'add']);
 Route::get('/categories',GetCategoriesController::class);
 Route::get('/products',[ProductsController::class, 'getAllProducts']);
 Route::get('/{categoryId}/{subcategoryId}', SubcategoryController::class);

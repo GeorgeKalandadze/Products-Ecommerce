@@ -1,5 +1,8 @@
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import {useGlobalContext} from "@/Context/Context.jsx";
 const ProductInfo = ({ product }) => {
+    const { addCartItem } = useGlobalContext()
+    console.log(product)
     return (
         <div className="flex gap-4 flex-col">
             <h1 className="text-[16px] text-[#008bd2] leading-10 uppercase tracking-wide font-semibold">{product.name}</h1>
@@ -21,6 +24,7 @@ const ProductInfo = ({ product }) => {
                     <button className="w-full px-[20px] text-center font-bold text-[18px] text-[#008bd2]">+</button>
                 </div>
                 <button
+                    onClick={() => addCartItem(product.id)}
                     className="bg-[#008bd2] text-white px-[40px] py-[14px] text-[18px] font-bold rounded-[10px] flex gap-5"
                     style={{
                         boxShadow: "0 20px 50px -20px #008bd2"

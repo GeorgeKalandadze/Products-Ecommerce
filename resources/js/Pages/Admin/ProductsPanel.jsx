@@ -116,7 +116,7 @@ const ProductsPanel = (props) => {
                                     </option>
                                 ))}
                             </select>
-                            <p className="font-medium">Found 69 Products</p>
+                            <p className="font-medium">Found {products.length} Products</p>
                         </div>
                         <input
                             type="search"
