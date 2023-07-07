@@ -22,7 +22,6 @@ class ProductsController extends Controller
 
 
         $products = Product::with('productImages')->get();
-
         return Inertia::render('Product/Products',[
             'products' => $products->toJson()
         ]);

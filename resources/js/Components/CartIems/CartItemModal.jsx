@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import ProdImg from '../../assets/laptop.jpg'
+import {useGlobalContext} from "@/Context/Context.jsx";
 
 const style = {
     position: 'absolute',
@@ -19,6 +20,7 @@ const style = {
 };
 
 const CartItemModal = ({open, close}) => {
+    const {cartItems, handleDecrement, handleIncrement} = useGlobalContext();
     return (
         <div>
             <Modal
@@ -33,24 +35,26 @@ const CartItemModal = ({open, close}) => {
                             <h1 className="font-bold text-[20px]">Shopping Cart</h1>
                             <h1 className="font-bold text-[20px]">3 Items</h1>
                         </div>
-                        <div className="border-b-2 border-gray-300 py-4 flex justify-between">
+                        {cartItems.map((cart) => (
+                            <div className="border-b-2 border-gray-300 py-4 flex justify-between">
 
-                            <div className="flex gap-3 ">
-                                <img src={ProdImg} className="w-[80px] h-[70px]"/>
-                                <div className="flex flex-col justify-between">
-                                    <p className="font-bold">Name</p>
-                                    <p className="text-gray-500">23.00$</p>
+                                <div className="flex gap-3 ">
+                                    <img src={cart.product.image} className="w-[80px] h-[70px]"/>
+                                    <div className="flex flex-col justify-between">
+                                        <p className="font-bold">{cart.product.name}</p>
+                                        <p className="text-gray-500">{cart.product.price}</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4 items-center">
+                                    <div>
+                                        <button className="px-3" onClick={() => handleDecrement(cart.id)}>-</button>
+                                        <span className="px-3 py-2 bg-gray-100">{cart.quantity}</span>
+                                        <button className="px-3" onClick={() => handleIncrement(cart.id)}>+</button>
+                                    </div>
+                                    <p className="font-bold">66.00$</p>
                                 </div>
                             </div>
-                            <div className="flex gap-4 items-center">
-                                <div>
-                                    <button className="px-3">-</button>
-                                    <span className="px-3 py-2 bg-gray-100">0</span>
-                                    <button className="px-3">+</button>
-                                </div>
-                                <p className="font-bold">66.00$</p>
-                            </div>
-                        </div>
+                        ))}
                         <div className="mt-4 flex flex-col gap-4">
                             <div className="flex justify-between">
                                 <p className="text-gray-500">Subtotal</p>

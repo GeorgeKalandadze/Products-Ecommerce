@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 Route::post('cart/add', [CartController::class,'add']);
+Route::get('/cart', [CartController::class,'index']);
+Route::put('/cart/{cart_id}/{scope}', [CartController::class,'updateQuantity']);
 Route::get('/categories',GetCategoriesController::class);
 Route::get('/products',[ProductsController::class, 'getAllProducts']);
 Route::get('/{categoryId}/{subcategoryId}', SubcategoryController::class);
