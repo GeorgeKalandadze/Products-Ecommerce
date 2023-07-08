@@ -20,7 +20,12 @@ const style = {
 };
 
 const CartItemModal = ({open, close}) => {
-    const {cartItems, handleDecrement, handleIncrement} = useGlobalContext();
+    const {cartItems, handleDecrement, handleIncrement, clearCart} = useGlobalContext()
+
+    const totalPrice = () => {
+        return cartItems.reduce((accum, next) => accum + next.product.price * next.quantity, 0)
+    }
+
     return (
         <div>
             <Modal
@@ -32,8 +37,13 @@ const CartItemModal = ({open, close}) => {
                 <Box sx={style}>
                     <div className="w-full flex flex-col">
                         <div className="flex justify-between border-b-2 border-gray-300 py-4">
-                            <h1 className="font-bold text-[20px]">Shopping Cart</h1>
-                            <h1 className="font-bold text-[20px]">3 Items</h1>
+                            <h1 className="font-bold text-[20px]">Shopping Cart ({cartItems.length})</h1>
+                            <button
+                                className="border-none outline-none font-normal font-medium text-base leading-6 underline text-black mix-blend-normal opacity-50 bg-transparent cursor-pointer"
+                                onClick={() => clearCart()}
+                            >
+                                Remove All
+                            </button>
                         </div>
                         {cartItems.map((cart) => (
                             <div className="border-b-2 border-gray-300 py-4 flex justify-between">
@@ -51,7 +61,7 @@ const CartItemModal = ({open, close}) => {
                                         <span className="px-3 py-2 bg-gray-100">{cart.quantity}</span>
                                         <button className="px-3" onClick={() => handleIncrement(cart.id)}>+</button>
                                     </div>
-                                    <p className="font-bold">66.00$</p>
+                                    <p className="font-bold">{cart.quantity * cart.product.price}$</p>
                                 </div>
                             </div>
                         ))}
@@ -66,7 +76,7 @@ const CartItemModal = ({open, close}) => {
                             </div>
                             <div className="flex justify-between">
                                 <p className="text-gray-500 font-bold">Total</p>
-                                <p className="font-bold text-[20px]">100.00$</p>
+                                <p className="font-bold text-[20px]">{totalPrice()}$</p>
                             </div>
                         </div>
                         <button className="px-8 py-3 bg-[#194f7d] text-white font-bold text-center mt-4 ">PROCEED TO CHECKOUT</button>

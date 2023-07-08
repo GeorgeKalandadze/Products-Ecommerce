@@ -49,13 +49,12 @@ class CartController extends Controller
                             'product_id' => $product_id,
                             'quantity' => $quantity,
                         ];
-                        CartItem::create($data);
-                        $cartItems = CartItem::with('product')
-                            ->where('user_id', $user->id)
-                            ->get();
+                        $cartItem = CartItem::create($data);
+                        $cartItem->load('product.productImages');
+
 
                         return response()->json([
-                            'data' => $cartItems->toJson(),
+                            'data' => new CartItemResource($cartItem),
                             'message' => 'Added to cart'
                         ], 201);
                     }
@@ -82,14 +81,22 @@ class CartController extends Controller
             $cartItem = CartItem::where('id',$cart_id)->where('user_id',$user_id)->first();
             if($cartItem){
                 if($scope == "inc"){
-                    $cartItem->quantity += 1;
+                    $product = $cartItem->product;
+                    if ($product->quantity > $cartItem->quantity) {
+                        $cartItem->quantity += 1;
+                    } else {
+                        return response()->json([
+                            'status' => 400,
+                            'message' => 'The product is out of stock'
+                        ]);
+                    }
                 }else if($scope == "dec"){
                     if($cartItem->quantity > 0) {
                         $cartItem->quantity -= 1;
                         if($cartItem->quantity == 0) {
                             $cartItem->delete();
                             return response()->json([
-
+                                'data' => CartItemResource::collection(CartItem::with('product.productImages')),
                                 'message' => 'cart item deleted'
                             ],201);
                         }
@@ -114,4 +121,18 @@ class CartController extends Controller
             }
         }
     }
+
+    public function deleteAllCartItem(Request $request)
+    {
+//        $user = $request->user();
+        $user = User::find(1);
+        if ($user) {
+            CartItem::where('user_id', $user->id)->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Cart cleared'
+            ]);
+        }
+    }
+
 }

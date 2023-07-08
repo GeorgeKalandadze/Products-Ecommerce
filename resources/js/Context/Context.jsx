@@ -26,7 +26,8 @@ export const AppProvider = ({children}) => {
                 quantity: 1,
             })
             .then((response) => {
-                console.log(response)
+
+                setCartItems((cart) => [...cart, response.data.data])
             })
             .catch((error) => {
                console.log(error)
@@ -62,9 +63,19 @@ export const AppProvider = ({children}) => {
     const updateCartQuantity = (cart_id,  scope) => {
         axios.put(`${window.location.protocol}//${window.location.host}/api/cart/${cart_id}/${scope}`)
             .then(response => {
-                console.log(response.data,"resssssssssssssssssssss")
-
+                console.log(response.data,"ressssssssssssssssssssssssssssss")
             })
+    }
+
+    //clear cart items
+    const clearCart = () => {
+        axios.delete(`${window.location.protocol}//${window.location.host}/api/cart/delete-cart`)
+            .then(({data}) => {
+                setCartItems([])
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     console.log(cartItems,"carts")
@@ -76,7 +87,8 @@ export const AppProvider = ({children}) => {
         addCartItem,
         cartItems,
         handleIncrement,
-        handleDecrement
+        handleDecrement,
+        clearCart
     }}>
         {children}
     </AppContext.Provider>
