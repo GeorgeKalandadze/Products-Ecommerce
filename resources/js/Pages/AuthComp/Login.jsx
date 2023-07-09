@@ -8,7 +8,7 @@ import TextInput from '@/Components/AuthComponents/TextInput.jsx';
 import { Head, Link, useForm } from '@inertiajs/react';
 import Header from "@/Components/AuthComponents/Header";
 
-export default function Login({ status, canResetPassword }) {
+export default  function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -54,6 +54,7 @@ export default function Login({ status, canResetPassword }) {
 
                     <InputError message={errors.email} className="mt-2" />
                 </div>
+
 
                 <div className="mt-4">
                     <InputLabel htmlFor="password" value="Password" />

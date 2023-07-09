@@ -18,7 +18,7 @@ use \App\Http\Controllers\AdminPanelController;
 */
 //
 Route::get('/', function () {
-    return Inertia::render('Auth/login', [
+    return Inertia::render('AuthComp/login', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
