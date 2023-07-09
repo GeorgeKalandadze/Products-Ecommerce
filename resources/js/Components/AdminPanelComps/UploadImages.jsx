@@ -9,13 +9,13 @@ const UploadImages = ({error}) => {
     const [fileList, setFileList] = useState([]);
     const { productsData, setProductsData, selectedProduct } = useGlobalContext();
 
-    useEffect(() => {
-        if (selectedProduct) {
-            setFileList(selectedProduct.product_images);
-        } else {
-            setFileList([]);
-        }
-    }, [selectedProduct]);
+    // useEffect(() => {
+    //     if (selectedProduct) {
+    //         setFileList(selectedProduct.product_images);
+    //     } else {
+    //         setFileList([]);
+    //     }
+    // }, [selectedProduct]);
 
     const onDragEnter = () => wrapperRef.current.classList.add('dragover');
     const onDragLeave = () => wrapperRef.current.classList.remove('dragover');
@@ -87,7 +87,7 @@ const UploadImages = ({error}) => {
                             <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded overflow-hidden">
                                 <img
-                                    src={selectedProduct ?  item.name :URL.createObjectURL(item)}
+                                    src={URL.createObjectURL(item)}
                                     alt=""
                                     className="w-full h-full object-cover"
                                 />

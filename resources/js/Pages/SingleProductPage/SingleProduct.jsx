@@ -9,7 +9,7 @@ export default function SingleProduct(props){
 
     return (
         <ProductsLayout>
-            <div className="flex gap-[60px]">
+            <div className="flex gap-[60px] justify-between items-center">
                 <ImagesSection images={props.productImages} />
                 <ProductInfo product={product}/>
             </div>

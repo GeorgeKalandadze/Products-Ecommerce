@@ -4,7 +4,7 @@ import {useState} from "react";
 
 const ProductCard = ({ props }) => {
     const [isCartClicked, setIsCartClicked] = useState(false);
-    console.log(props.product_images[0]?.path, 'props');
+    console.log(props.product_images[0]?.name, 'props');
 
     const handleCartClick = () => {
         setIsCartClicked(!isCartClicked);
@@ -14,7 +14,7 @@ const ProductCard = ({ props }) => {
         <div className="p-4 transition duration-300 shadow-lg w-[350px] rounded relative" onClick={() => console.log(props.id)}>
             {props.product_images && props.product_images.length > 0 && (
                 <img
-                    src={props.product_images[0]?.path}
+                    src={props.product_images[0]?.name}
                     className="w-full h-[20.63rem] cursor-pointer"
                 />
             )}

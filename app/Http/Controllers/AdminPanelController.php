@@ -29,6 +29,7 @@ class AdminPanelController extends Controller
             ->paginate($perPage);
 
         $products = Product::with('productImages')->get();
+
         return Inertia::render('Admin/ProductsPanel', [
             'products' => $query
         ]);

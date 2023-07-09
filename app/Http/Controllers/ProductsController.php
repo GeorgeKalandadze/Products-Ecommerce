@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductUpdateRequest;
+use App\Http\Requests\ProductUpdateRequestRequest;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
@@ -101,7 +103,6 @@ class ProductsController extends Controller
             ->orderBy($sortField, $sortDirection)
             ->with('productImages')
             ->paginate($perPage);
-       $products = Product::with('productImages')->get();
         return response()->json( $query );
     }
 
@@ -114,12 +115,12 @@ class ProductsController extends Controller
     }
 
 
-    public function update(ProductRequest $request, $id)
+    public function update(ProductUpdateRequest $request, $id)
     {
+
         try {
             $data = $request->validated();
             $product = Product::find($id);
-
             $product->update($data);
             if (isset($data['images'])) {
                 $existingImages = $product->productImages;
@@ -130,7 +131,6 @@ class ProductsController extends Controller
                 }
                 foreach ($newImages as $index => $image) {
                     $imageName = $product->id  . time()  . $index  . $image->getClientOriginalName();
-                    $imageName =  $image->getClientOriginalName();
                     $image->storeAs('public/product_images', $imageName);
 
                     ProductImage::create([

@@ -46,7 +46,7 @@ export default function Login({ status, canResetPassword }) {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full "
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
@@ -81,9 +81,7 @@ export default function Login({ status, canResetPassword }) {
                         <span className="ml-2 text-sm text-gray-600">Remember me</span>
                     </label>
                 </div>
-
                 <div className="flex items-center justify-end mt-4 flex-col">
-
 
                     <PrimaryButton className="w-full p-3.5 bg-[#194f7d] mb-6 text-center" disabled={processing}>
                         Log in

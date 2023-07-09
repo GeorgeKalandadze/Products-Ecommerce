@@ -6,12 +6,14 @@ import {Button, Menu, MenuItem} from '@mui/material';
 import axios from "axios";
 import { Dropdown, DropdownMenuItem, DropdownNestedMenuItem } from "./NavbarComps/Dropdown/Dropdown.jsx";
 import SearchIcon from '@mui/icons-material/Search';
+import CartItemModal from "@/Components/CartIems/CartItemModal.jsx";
 
 const Navbar = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
     const [hoveredCategory, setHoveredCategory] = useState(null);
+    const [openShopCart, setOpenShopCart] = useState(false)
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -46,6 +48,10 @@ const Navbar = () => {
 
     return (
         <div className="shadow-md p-6 px-2 flex justify-between md:px-[80px]">
+            <CartItemModal
+                open={openShopCart}
+                close={() => setOpenShopCart(false)}
+            />
             <NavLogo />
             <ul className="flex items-center justify-between gap-8">
                 <li className="cursor-pointer">All Products</li>
@@ -85,7 +91,7 @@ const Navbar = () => {
             </ul>
             <div className="flex gap-4 items-center">
                 <SearchIcon className="cursor-pointer"/>
-                <ShoppingCartOutlinedIcon className="cursor-pointer" />
+                <ShoppingCartOutlinedIcon className="cursor-pointer" onClick={() => setOpenShopCart(true)}/>
                 <select
                     className="appearance-none text-gray-700 leading-tight  bg-transparent border-none font-bold outline-0 cursor-pointer"
                 >
@@ -95,6 +101,7 @@ const Navbar = () => {
                 </select>
                 {/*<BurgerMenu/>*/}
             </div>
+
         </div>
     );
 };
