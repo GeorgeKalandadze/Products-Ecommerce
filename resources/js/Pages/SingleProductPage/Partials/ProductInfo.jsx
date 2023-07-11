@@ -13,8 +13,12 @@ const ProductInfo = ({ product }) => {
             <h1 className="text-[16px] text-[#008bd2] leading-10 uppercase tracking-wide font-semibold">
                 {product.name}
             </h1>
+
             <h1 className="w-[500px] text-[32px] font-semibold break-words">{product.quote}</h1>
             <p className="w-[400px] text-[#69707d] break-words">{product.description}</p>
+            {product.quantity === 0 && <p className="text-red-600 text-[20px]">
+                Product is out of the stock
+            </p>}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <h1 className="font-black text-[28px]">${product.price}</h1>

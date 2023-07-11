@@ -25,7 +25,7 @@ const AdminPanelLayout = ({ children }) => {
         width: 200,
         bgcolor: 'background.paper',
         border: '0',
-        boxShadow: 24,
+        boxShadow: '24', // Pass the value as a string
         borderRadius: '6px',
         p: 2,
         display: 'flex',
@@ -66,7 +66,7 @@ const AdminPanelLayout = ({ children }) => {
                 </div>
             </Box>
 
-            <style jsx>{`
+            <style >{`
         .blur {
           filter: blur(4px);
         }

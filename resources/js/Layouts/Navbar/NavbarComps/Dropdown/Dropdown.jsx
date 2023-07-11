@@ -9,7 +9,7 @@ export const Dropdown = React.forwardRef(
         {
             trigger,
             menu,
-            keepOpen: keepOpenGlobal,
+            keepopen: keepOpenGlobal, // Update prop name to "keepopen"
             isOpen: controlledIsOpen,
             onOpen: onControlledOpen,
             minWidth
@@ -50,7 +50,7 @@ export const Dropdown = React.forwardRef(
         };
 
         const renderMenu = (menuItem, index) => {
-            const { keepOpen: keepOpenLocal, ...props } = menuItem.props;
+            const { keepopen: keepOpenLocal, ...props } = menuItem.props; // Update prop name to "keepopen"
 
             let extraProps = {};
             if (props.menu) {

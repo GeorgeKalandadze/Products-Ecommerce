@@ -83,9 +83,6 @@ const ProductsPanel = (props) => {
     }
 
 
-
-
-
     return (
         <AdminPanelLayout>
           <ProductForm
@@ -128,6 +125,7 @@ const ProductsPanel = (props) => {
                     </div>
                     <table className="mt-6 w-full ">
                         <thead className="bg-white border-b-2 border-t-2 ">
+                        <tr>
                         <th className="py-[15px] cursor-pointer" onClick={() => handleSort('id')}>
                             ID {sortField === 'id' && (sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />)}
                         </th>
@@ -144,6 +142,7 @@ const ProductsPanel = (props) => {
                             Last Updated At {sortField === 'updated_at' && (sortDirection === 'asc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />)}
                         </th>
                         <th>Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
                         {products.length > 0 &&  products.map((product,index) => (
@@ -194,10 +193,8 @@ const ProductsPanel = (props) => {
 
                         </tbody>
                     </table>
-                    <div className="mt-6">
-                        <p>showing from 1 to 10</p>
-                        <div>
-                        </div>
+                    <div className="mt-6 flex justify-between">
+
                     </div>
                 </div>
             </section>

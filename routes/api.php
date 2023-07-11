@@ -20,14 +20,17 @@ use \App\Http\Controllers\CartController;
 Route::middleware('auth:sanctum')->group(function () {
 
 });
-Route::post('cart/add', [CartController::class,'add']);
-Route::get('/cart', [CartController::class,'index']);
-Route::delete('cart/delete-cart', [CartController::class,'deleteAllCartItem']);
-Route::put('/cart/{cart_id}/{scope}', [CartController::class,'updateQuantity']);
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class,'index']);
+    Route::post('/add', [CartController::class,'add']);
+    Route::put('/{cart_id}/{scope}', [CartController::class,'updateQuantity']);
+    Route::delete('delete-cart', [CartController::class,'deleteAllCartItem']);
+});
 Route::get('/categories',GetCategoriesController::class);
 Route::get('/products',[ProductsController::class, 'getAllProducts']);
 Route::get('/{categoryId}/{subcategoryId}', SubcategoryController::class);
-Route::post('/products/create',[ProductsController::class, 'store']);
+Route::post('/products/create',[ProductsController::class, 'store'])->name('product.create');
 Route::post('/products/update/{id}',[ProductsController::class, 'update'])->name('products.update');
 Route::delete('/products/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
+
 
