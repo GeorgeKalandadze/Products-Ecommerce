@@ -3,6 +3,7 @@ import ProductsLayout from "@/Layouts/ProductsLayout";
 import ProductCard from "@/Components/ProductCard/ProductCard.jsx";
 import {useState} from "react";
 
+
 export default function Products(props){
     const products = JSON.parse(props.products)
     const [currPage, setCurrPage] = useState(1);
@@ -15,6 +16,7 @@ export default function Products(props){
     const changePage = (id) => {
         setCurrPage(id)
     }
+
 
     const prePage = () => {
         if(currPage !== 1){

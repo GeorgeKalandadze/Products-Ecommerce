@@ -5,8 +5,9 @@ import InputError from '@/Components/AuthComponents/InputError.jsx';
 import InputLabel from '@/Components/AuthComponents/InputLabel.jsx';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/AuthComponents/TextInput.jsx';
-import { Head, Link, useForm } from '@inertiajs/react';
+import {Head, Link, useForm, usePage} from '@inertiajs/react';
 import Header from "@/Components/AuthComponents/Header";
+
 
 export default  function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -14,6 +15,7 @@ export default  function Login({ status, canResetPassword }) {
         password: '',
         remember: false,
     });
+
 
     useEffect(() => {
         return () => {

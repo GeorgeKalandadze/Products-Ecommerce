@@ -34,16 +34,16 @@ export default function VerifyEmail({ status }) {
                 <div className="mt-4 flex items-center flex-col justify-between">
                     <PrimaryButton
                         processing={processing}
-                        className="global_login_btn color-1 font-[poppins-medium] !mb-[12px]"
+                        className=" p-3.5 bg-[#194f7d]  text-center"
                     >
                         Resend Verification Email
                     </PrimaryButton>
 
-                    <Link href={route("logout")} method="post" as="button">
-                        <SecondaryButton className="border-none  bg-[transparent] shadow-[unset]">
-                            Log Out
-                        </SecondaryButton>
-                    </Link>
+                    {/*<Link href={route("logout")} method="post" as="button">*/}
+                    {/*    <SecondaryButton className="border-none  bg-[transparent] shadow-[unset]">*/}
+                    {/*        Log Out*/}
+                    {/*    </SecondaryButton>*/}
+                    {/*</Link>*/}
                 </div>
             </form>
         </GuestLayout>

@@ -6,6 +6,7 @@ use \App\Http\Controllers\GetCategoriesController;
 use \App\Http\Controllers\SubcategoryController;
 use \App\Http\Controllers\ProductsController;
 use \App\Http\Controllers\CartController;
+use \App\Http\Controllers\CheckoutController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,20 +18,21 @@ use \App\Http\Controllers\CartController;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::post('/checkout',[CheckoutController::class, 'checkout']);
+    Route::prefix('cart')->group(function () {
+        Route::get('/', [CartController::class,'index']);
+        Route::post('/add', [CartController::class,'add']);
+        Route::put('/{cart_id}/{scope}', [CartController::class,'updateQuantity']);
+        Route::delete('delete-cart', [CartController::class,'deleteAllCartItem']);
+    });
+    Route::get('/categories',GetCategoriesController::class)->name('categories');
+    Route::get('/products',[ProductsController::class, 'getAllProducts']);
+    Route::get('/{categoryId}/{subcategoryId}', SubcategoryController::class);
+    Route::post('/products/create',[ProductsController::class, 'store'])->name('product.create');
+    Route::post('/products/update/{id}',[ProductsController::class, 'update'])->name('products.update');
+    Route::delete('/products/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
+});
 
-});
-Route::prefix('cart')->group(function () {
-    Route::get('/', [CartController::class,'index']);
-    Route::post('/add', [CartController::class,'add']);
-    Route::put('/{cart_id}/{scope}', [CartController::class,'updateQuantity']);
-    Route::delete('delete-cart', [CartController::class,'deleteAllCartItem']);
-});
-Route::get('/categories',GetCategoriesController::class);
-Route::get('/products',[ProductsController::class, 'getAllProducts']);
-Route::get('/{categoryId}/{subcategoryId}', SubcategoryController::class);
-Route::post('/products/create',[ProductsController::class, 'store'])->name('product.create');
-Route::post('/products/update/{id}',[ProductsController::class, 'update'])->name('products.update');
-Route::delete('/products/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
 
 

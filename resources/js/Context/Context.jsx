@@ -1,14 +1,15 @@
 import {createContext, useContext, useState, useEffect} from "react";
 import axios from "axios";
-import re from "../../../public/build/assets/DeleteUserForm-203596d2.js";
 
+import { router } from '@inertiajs/react'
 
-const AppContext = createContext({
+    const AppContext = createContext({
 
-});
+    });
 
-export const AppProvider = ({children}) => {
-    const [productsData, setProductsData] = useState({
+    export const AppProvider = ({children}) => {
+
+        const [productsData, setProductsData] = useState({
         name:"",
         slug:"",
         quote:"",
@@ -77,6 +78,19 @@ export const AppProvider = ({children}) => {
                 console.error(error);
             });
     }
+    //
+    // axios.defaults.withCredentials = true;
+    // axios.get('/sanctum/csrf-cookie').then(response => {
+    //     console.log(response.config.headers['X-XSRF-TOKEN']
+    //
+    //         , "rssssssssssssssssssssssssssssss")
+    // })
+
+        // router.post('/users', {
+        //     name: this.name,
+        //     email: this.email,
+        //     _token: this.$page.props.csrf_token,
+        // })
 
     console.log(cartItems,"carts")
     return <AppContext.Provider value={{

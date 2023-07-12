@@ -7,6 +7,8 @@ import axios from "axios";
 import { Dropdown, DropdownMenuItem, DropdownNestedMenuItem } from "./NavbarComps/Dropdown/Dropdown.jsx";
 import SearchIcon from '@mui/icons-material/Search';
 import CartItemModal from "@/Components/CartIems/CartItemModal.jsx";
+import axiosClient from "@/axios/axios-client.js";
+
 
 const Navbar = () => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -31,13 +33,29 @@ const Navbar = () => {
         }
     };
 
+    //
+    // const getToken = async () => {
+    //     await axios.get('/sanctum/csrf-cookie');
+    // }
+    //
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         await getToken();
+    //         const res = await axios.get(`${window.location.protocol}//${window.location.host}/api/categories`);
+    //         setCategories(res.data);
+    //     };
+    //
+    //     fetchData();
+    // }, []);
+
     useEffect(() => {
-        axios
-            .get(`${window.location.protocol}//${window.location.host}/api/categories`)
+        axiosClient
+            .get('/categories')
             .then((res) => {
                 setCategories(res.data);
             });
     }, []);
+
 
     const handleMouseLeave = () => {
         setHoveredCategory(null);
@@ -47,11 +65,12 @@ const Navbar = () => {
     console.log(categories)
 
     return (
-        <div className="shadow-md p-6 px-2 flex justify-between md:px-[80px]">
+        <>
             <CartItemModal
                 open={openShopCart}
                 close={() => setOpenShopCart(false)}
             />
+        <div className="shadow-md p-6 px-2 flex justify-between md:px-[80px]">
             <NavLogo />
             <ul className="flex items-center justify-between gap-8">
                 <li className="cursor-pointer">All Products</li>
@@ -103,6 +122,7 @@ const Navbar = () => {
             </div>
 
         </div>
+            </>
     );
 };
 

@@ -25,10 +25,10 @@ export default function ForgotPassword({ status }) {
         <GuestLayout>
             <Head title="Forgot Password" />
 
-            <div className="mb-8 text-sm text-gray-600 font-[poppins-light]">
+            <div className="mb-8 text-sm text-gray-600 ">
                 Forgot your password? No problem. Just let us know your email
                 address and we will email you a password reset link that will
-                allow you to choose a new one.
+                allow you to choose a new one .
             </div>
 
             {status && (
@@ -54,17 +54,17 @@ export default function ForgotPassword({ status }) {
 
                 <div className="flex items-center flex-col ">
                     <PrimaryButton
-                        className="global_login_btn color-1 font-[poppins-medium] "
+                        className=" p-3.5 bg-[#194f7d] mt-6 text-center"
                         processing={processing}
                     >
                         {/* Email Password Reset Link */}
                         Email Password Reset Link
                     </PrimaryButton>
-                    <Link href={route("login")} className="mt-[20px]">
-                        <SecondaryButton className="border-none  bg-[transparent] shadow-[unset]">
-                            Back
-                        </SecondaryButton>
-                    </Link>
+                    {/*<Link href={route("login")} className="mt-[20px]">*/}
+                    {/*    <SecondaryButton className="border-none  bg-[transparent] shadow-[unset]">*/}
+                    {/*        Back*/}
+                    {/*    </SecondaryButton>*/}
+                    {/*</Link>*/}
                 </div>
             </form>
         </GuestLayout>

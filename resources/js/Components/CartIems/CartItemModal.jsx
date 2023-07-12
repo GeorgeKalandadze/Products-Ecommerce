@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import ProdImg from '../../assets/laptop.jpg'
 import {useGlobalContext} from "@/Context/Context.jsx";
+import axios from "axios";
 
 const style = {
     position: 'absolute',
@@ -26,6 +27,16 @@ const CartItemModal = ({open, close}) => {
         return cartItems.reduce((accum, next) => accum + next.product.price * next.quantity, 0)
     }
 
+    const makeCheckout = () => {
+        axios
+            .post(`${window.location.protocol}//${window.location.host}/api/checkout` )
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+    };
     return (
         <div>
             <Modal
@@ -79,7 +90,12 @@ const CartItemModal = ({open, close}) => {
                                 <p className="font-bold text-[20px]">{totalPrice()}$</p>
                             </div>
                         </div>
-                        <button className="px-8 py-3 bg-[#194f7d] text-white font-bold text-center mt-4 ">PROCEED TO CHECKOUT</button>
+                        <button
+                            className="px-8 py-3 bg-[#194f7d] text-white font-bold text-center mt-4"
+                            onClick={() => makeCheckout()}
+                        >
+                            PROCEED TO CHECKOUT
+                        </button>
                     </div>
                 </Box>
             </Modal>
