@@ -8,6 +8,8 @@ import { Dropdown, DropdownMenuItem, DropdownNestedMenuItem } from "./NavbarComp
 import SearchIcon from '@mui/icons-material/Search';
 import CartItemModal from "@/Components/CartIems/CartItemModal.jsx";
 import axiosClient from "@/axios/axios-client.js";
+import re from "../../../../public/build/assets/DeleteUserForm-203596d2.js";
+import SearchModal from "@/Components/SearchModal.jsx";
 
 
 const Navbar = () => {
@@ -16,7 +18,7 @@ const Navbar = () => {
     const [subcategories, setSubcategories] = useState([]);
     const [hoveredCategory, setHoveredCategory] = useState(null);
     const [openShopCart, setOpenShopCart] = useState(false)
-
+    const [openSearchModal, setOpenSearchModal] = useState(false)
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -33,14 +35,14 @@ const Navbar = () => {
         }
     };
 
+    // axios.defaults.withCredentials = true
     //
-    // const getToken = async () => {
-    //     await axios.get('/sanctum/csrf-cookie');
-    // }
-    //
+    //     axios.get('/sanctum/csrf-cookie').then(response => {
+    //         console.log(response,"resssssssssssssssssssssssssssssssss")
+    //     })
+
     // useEffect(() => {
     //     const fetchData = async () => {
-    //         await getToken();
     //         const res = await axios.get(`${window.location.protocol}//${window.location.host}/api/categories`);
     //         setCategories(res.data);
     //     };
@@ -57,6 +59,8 @@ const Navbar = () => {
     }, []);
 
 
+
+
     const handleMouseLeave = () => {
         setHoveredCategory(null);
         setSubcategories([]);
@@ -69,6 +73,10 @@ const Navbar = () => {
             <CartItemModal
                 open={openShopCart}
                 close={() => setOpenShopCart(false)}
+            />
+            <SearchModal
+                open={openSearchModal}
+                close={() => setOpenSearchModal(false)}
             />
         <div className="shadow-md p-6 px-2 flex justify-between md:px-[80px]">
             <NavLogo />
@@ -109,7 +117,7 @@ const Navbar = () => {
                 <li className="cursor-pointer">My Orders</li>
             </ul>
             <div className="flex gap-4 items-center">
-                <SearchIcon className="cursor-pointer"/>
+                <SearchIcon className="cursor-pointer" onClick={() => setOpenSearchModal(true)}/>
                 <ShoppingCartOutlinedIcon className="cursor-pointer" onClick={() => setOpenShopCart(true)}/>
                 <select
                     className="appearance-none text-gray-700 leading-tight  bg-transparent border-none font-bold outline-0 cursor-pointer"

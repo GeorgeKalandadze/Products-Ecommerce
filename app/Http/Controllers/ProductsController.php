@@ -17,9 +17,9 @@ use Exception;
 class ProductsController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-
+        $search = $request->query('search');
 
         $products = Product::with('productImages')->get();
         return Inertia::render('Product/Products',[

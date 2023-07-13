@@ -13,8 +13,7 @@ class CartController extends Controller
 {
     public function index(Request $request)
     {
-        //$user = $request->user();
-        $user = User::find(1);
+        $user = $request->user();
         if($user){
             $user_id = $user->id;
             $cartItems = CartItem::with('product.productImages')
@@ -26,7 +25,7 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        $user = User::find(1);
+        $user = $request->user();
         $product_id = $request->product_id;
         $quantity = $request->quantity;
 
@@ -74,8 +73,7 @@ class CartController extends Controller
 
     public function updateQuantity($cart_id, $scope, Request $request)
     {
-//        $user = $request->user();
-        $user = User::find(1);
+        $user = $request->user();
         if($user){
             $user_id = $user->id;
             $cartItem = CartItem::where('id',$cart_id)->where('user_id',$user_id)->first();
@@ -124,8 +122,7 @@ class CartController extends Controller
 
     public function deleteAllCartItem(Request $request)
     {
-//        $user = $request->user();
-        $user = User::find(1);
+        $user = $request->user();
         if ($user) {
             CartItem::where('user_id', $user->id)->delete();
             return response()->json([

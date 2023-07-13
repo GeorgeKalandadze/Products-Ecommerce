@@ -8,11 +8,12 @@ import { Modal } from '@mui/material';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import { TextField } from "@mui/material";
+import {useForm} from "@inertiajs/react";
 
 const AdminPanelLayout = ({ children }) => {
     const [open, setOpen] = useState(false);
     const [openModal, setOpenModal] = useState(false);
-
+    const {post} = useForm();
     const handleDrawerOpen = () => {
         setOpen((isOpen) => !isOpen);
     };
@@ -51,10 +52,10 @@ const AdminPanelLayout = ({ children }) => {
                             onClose={() => setOpenModal(false)}
                         >
                             <Box sx={style}>
-                                <p className="text-[15px] flex gap-3">
+                                <p className="text-[15px] flex gap-3 cursor-pointer" >
                                     <PermIdentityOutlinedIcon sx={{ color: '#8691f8' }} /> Profile
                                 </p>
-                                <p className="text-[15px] flex gap-3">
+                                <p className="text-[15px] flex gap-3 cursor-pointer" onClick={() => post(route('logout'))}>
                                     <LogoutOutlinedIcon sx={{ color: '#8691f8' }} /> Logout
                                 </p>
                             </Box>
