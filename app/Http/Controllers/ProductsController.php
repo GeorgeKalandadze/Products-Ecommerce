@@ -19,8 +19,6 @@ class ProductsController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request->query('search');
-
         $products = Product::with('productImages')->get();
         return Inertia::render('Product/Products',[
             'products' => $products->toJson()
@@ -92,7 +90,6 @@ class ProductsController extends Controller
     }
 
     public function getAllProducts(){
-
         $perPage = request('per_page', 5);
         $search = request('search', '');
         $sortField = request('sort_field', 'id');

@@ -27,8 +27,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::delete('delete-cart', [CartController::class,'deleteAllCartItem']);
     });
     Route::get('/categories',GetCategoriesController::class)->name('categories');
+    Route::get('/products',[ProductsController::class, 'getAllProducts']);
     Route::middleware(['admin'])->group(function () {
-        Route::get('/products',[ProductsController::class, 'getAllProducts']);
         Route::get('/{categoryId}/{subcategoryId}', SubcategoryController::class);
         Route::post('/products/create',[ProductsController::class, 'store'])->name('product.create');
         Route::post('/products/update/{id}',[ProductsController::class, 'update'])->name('products.update');
