@@ -8,12 +8,12 @@ import { Modal } from '@mui/material';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import { TextField } from "@mui/material";
-import {useForm} from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
 
 const AdminPanelLayout = ({ children }) => {
     const [open, setOpen] = useState(false);
     const [openModal, setOpenModal] = useState(false);
-    const {post} = useForm();
+    const { post } = useForm();
     const handleDrawerOpen = () => {
         setOpen((isOpen) => !isOpen);
     };
@@ -36,8 +36,8 @@ const AdminPanelLayout = ({ children }) => {
 
     return (
         <>
-            <Box sx={{ display: 'flex', flexDirection: 'column', }}>
-                <Sidebar isOpen={open} setOpen={setOpen}/>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Sidebar isOpen={open} setOpen={setOpen} />
                 <nav className="w-full p-4 bg-gray-100 flex justify-between items-center">
                     <MenuIcon sx={{ color: 'black', cursor: 'pointer' }} onClick={handleDrawerOpen} />
                     <div className={`flex gap-4 items-center relative ${open ? 'blur' : ''}`}>
@@ -52,7 +52,7 @@ const AdminPanelLayout = ({ children }) => {
                             onClose={() => setOpenModal(false)}
                         >
                             <Box sx={style}>
-                                <p className="text-[15px] flex gap-3 cursor-pointer" >
+                                <p className="text-[15px] flex gap-3 cursor-pointer">
                                     <PermIdentityOutlinedIcon sx={{ color: '#8691f8' }} /> Profile
                                 </p>
                                 <p className="text-[15px] flex gap-3 cursor-pointer" onClick={() => post(route('logout'))}>
@@ -67,7 +67,7 @@ const AdminPanelLayout = ({ children }) => {
                 </div>
             </Box>
 
-            <style >{`
+            <style>{`
         .blur {
           filter: blur(4px);
         }
