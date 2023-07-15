@@ -1,6 +1,6 @@
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useGlobalContext } from "@/Context/Context.jsx";
-import un from "../../../../../public/build/assets/DeleteUserForm-203596d2.js";
+
 
 const ProductInfo = ({ product }) => {
     const { addCartItem, cartItems, handleIncrement, handleDecrement } = useGlobalContext();
@@ -9,13 +9,13 @@ const ProductInfo = ({ product }) => {
     const isCartEmpty = cart === undefined;
 
     return (
-        <div className="flex gap-4 flex-col">
+        <div className="flex gap-4 flex-col w-full px-6 md:w-auto">
             <h1 className="text-[16px] text-[#008bd2] leading-10 uppercase tracking-wide font-semibold">
                 {product.name}
             </h1>
 
-            <h1 className="w-[500px] text-[32px] font-semibold break-words">{product.quote}</h1>
-            <p className="w-[400px] text-[#69707d] break-words">{product.description}</p>
+            <h1 className="max-w-[500px] text-[28px] font-semibold break-words xl:text-[32px]">{product.quote}</h1>
+            <p className="max-w-[400px] text-[#69707d] break-words">{product.description}</p>
             {product.quantity === 0 && <p className="text-red-600 text-[20px]">
                 Product is out of the stock
             </p>}
@@ -28,8 +28,8 @@ const ProductInfo = ({ product }) => {
                 </div>
                 <h2 className="text-[18px]">${product.price}</h2>
             </div>
-            <div className="flex items-center justify-between">
-                <div className={`bg-[#e7eaf1] py-[14px] flex rounded-[10px] ${isCartEmpty ? 'opacity-50' : ''}`}>
+            <div className="flex flex-col gap-6  items-center justify-between xl:flex-row ">
+                <div className={`bg-[#e7eaf1] py-[14px] w-full flex rounded-[10px] ${isCartEmpty ? 'opacity-50' : ''} xl:w-auto`}>
                     <button
                         className="w-full px-[20px] text-center font-bold text-[18px] text-[#008bd2]"
                         onClick={() => handleDecrement(cart.id)}
@@ -52,7 +52,7 @@ const ProductInfo = ({ product }) => {
                 </div>
                 <button
                     onClick={() => addCartItem(product.id)}
-                    className="bg-[#008bd2] text-white px-[40px] py-[14px] text-[18px] font-bold rounded-[10px] flex gap-5"
+                    className="bg-[#008bd2] text-white w-full px-[40px] py-[14px] text-[18px] font-bold rounded-[10px] flex gap-5 xl:w-auto"
                     style={{
                         boxShadow: "0 20px 50px -20px #008bd2",
                     }}
