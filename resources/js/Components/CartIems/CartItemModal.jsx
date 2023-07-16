@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import ProdImg from '../../assets/laptop.jpg'
 import {useGlobalContext} from "@/Context/Context.jsx";
 import axios from "axios";
 

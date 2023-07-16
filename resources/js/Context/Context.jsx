@@ -1,7 +1,6 @@
 import {createContext, useContext, useState, useEffect} from "react";
 import axios from "axios";
 
-import { router } from '@inertiajs/react'
 
     const AppContext = createContext({
 
@@ -78,21 +77,7 @@ import { router } from '@inertiajs/react'
                 console.error(error);
             });
     }
-    //
-    // axios.defaults.withCredentials = true;
-    // axios.get('/sanctum/csrf-cookie').then(response => {
-    //     console.log(response.config.headers['X-XSRF-TOKEN']
-    //
-    //         , "rssssssssssssssssssssssssssssss")
-    // })
 
-        // router.post('/users', {
-        //     name: this.name,
-        //     email: this.email,
-        //     _token: this.$page.props.csrf_token,
-        // })
-
-    console.log(cartItems,"carts")
     return <AppContext.Provider value={{
         productsData,
         setProductsData,
