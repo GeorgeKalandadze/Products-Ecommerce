@@ -2,18 +2,21 @@ import AdminPanelLayout from "@/Layouts/AdminPanelLayout.jsx";
 import Accordion from "@/Components/Accordion.jsx";
 import PersonIcon from '@mui/icons-material/Person';
 import StatCard from "@/Components/AdminPanelComps/StatCard.jsx";
+import {useState} from "react";
 
 
-const AdminPanel = () => {
+const AdminPanel = (props) => {
+    const [dashboardData, setDashboardData] = useState(props.data)
+    console.log(dashboardData)
     return(
         <AdminPanelLayout>
             <section className="p-[16px]">
                 <h1 className="font-bold text-[30px] ">Dashboard</h1>
                 <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-4 gap-4 sm:grid-cols-2">
-                    <StatCard head="Active Customers" end={200} />
-                    <StatCard head="Active Products" end={400} />
-                    <StatCard head="Paid Orders" end={50} />
-                    <StatCard head="Total Incomes" end={20000.2} />
+                    <StatCard head="Active Customers" end={dashboardData.activeCustomersCount} />
+                    <StatCard head="Active Products" end={dashboardData.productsCount} />
+                    <StatCard head="Paid Orders" end={dashboardData.paidOrdersCount}/>
+                    <StatCard head="Total Incomes" end={dashboardData.totalIncomes}/>
                 </div>
                 <div className="mt-6 grid grid-cols-1 gap-6 justify-between lg:grid-cols-[63%,35%]">
                     <div className="bg-[#f3f4f6] p-4 rounded-[8px] shadow-xl h-[100vh] ">
@@ -27,11 +30,13 @@ const AdminPanel = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-2 lg:grid-cols-1 gap-6 justify-between">
-                        <div className="text-center bg-[#f3f4f6]  p-4 rounded-[8px] shadow-xl col-span-2 lg:col-span-2 md:col-span-1">
+                        <div className="text-center bg-[#f3f4f6]  p-4 rounded-[8px] shadow-xl col-span-2  lg:col-span-2 md:col-span-1 ">
                             <h1 className="text-[20px] font-bold mb-4">The most popular products</h1>
-                            <Accordion />
-                            <Accordion />
-                            <Accordion />
+                            {dashboardData.topProducts.map((product) => (
+                                <Accordion name={product.name} desc={product.description}/>
+
+                            ))}
+
                         </div>
                         <div className="text-center bg-[#f3f4f6] p-4 rounded-[8px] shadow-xl col-span-2 lg:col-span-2 md:col-span-1">
                             <h1 className="text-[20px] font-bold mb-3">Latest Customers</h1>
@@ -39,10 +44,13 @@ const AdminPanel = () => {
                                 <div className="rounded-full bg-gray-300 p-3">
                                     <PersonIcon />
                                 </div>
-                                <div className="text-left flex flex-col gap-2">
-                                    <p className="font-medium">Gio</p>
-                                    <p className="font-medium">Gio@gmail.com</p>
-                                </div>
+                                {dashboardData.latestCustomers.map((customer) => (
+                                    <div className="text-left flex flex-col gap-2">
+                                        <p className="font-medium">{customer.name}</p>
+                                        <p className="font-medium">{customer.email}</p>
+                                    </div>
+                                ))
+                                }
                             </div>
                         </div>
                     </div>
