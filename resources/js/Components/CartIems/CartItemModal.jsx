@@ -28,14 +28,24 @@ const CartItemModal = ({open, close}) => {
 
     const makeCheckout = () => {
         axios
-            .post(`${window.location.protocol}//${window.location.host}/api/checkout` )
+            .post(
+                `${window.location.protocol}//${window.location.host}/api/checkout`,
+                {},
+                {
+                    headers: {
+                        "Access-Control-Allow-Origin": "XMLHttpRequest",
+                    },
+                }
+            )
             .then((response) => {
-                console.log(response)
+                console.log(response);
+                window.location.href = response.data.session_url
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
             });
     };
+
     return (
         <div>
             <Modal
