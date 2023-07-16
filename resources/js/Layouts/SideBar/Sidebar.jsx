@@ -12,8 +12,6 @@ import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { Link} from '@inertiajs/react';
 const PersistentDrawerLeft = ({ isOpen,setOpen }) => {
-    const theme = useTheme();
-
     return (
         <Drawer
             sx={{
@@ -75,14 +73,6 @@ const PersistentDrawerLeft = ({ isOpen,setOpen }) => {
                     </ListItemButton>
                 </ListItem>
                 </Link>
-                {/*<ListItem disablePadding>*/}
-                {/*    <ListItemButton>*/}
-                {/*        <ListItemIcon>*/}
-                {/*            <GroupOutlinedIcon sx={{ color: 'white' }} />*/}
-                {/*        </ListItemIcon>*/}
-                {/*        <ListItemText primary={'Customers'} sx={{ color: 'white' }} />*/}
-                {/*    </ListItemButton>*/}
-                {/*</ListItem>*/}
             </List>
         </Drawer>
     );

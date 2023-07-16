@@ -31,7 +31,7 @@ export default function Products(props){
     }
     return (
         <ProductsLayout>
-            <div className="flex justify-between flex-wrap gap-6">
+            <div className="flex  justify-center px-[30px] flex-wrap gap-6 md:justify-between md:px-0 ">
                 {records.map((product) => (
                     <ProductCard key={product.id} props={product}/>
                 ))}

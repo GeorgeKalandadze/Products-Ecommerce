@@ -33,8 +33,6 @@ const ImagesSection = ({ images }) => {
         setProductImage(images[previousIndex].name);
     };
 
-
-
     if (isMobile) {
         return (
             <div className="relative w-full">
@@ -54,7 +52,7 @@ const ImagesSection = ({ images }) => {
                 </div>
                 <img
                     src={productImage}
-                    className="rounded  h-[500px] mx-auto w-full transition-opacity duration-500"
+                    className="rounded  h-[500px] mx-auto w-full transition duration-500"
                     style={{ opacity: 1 }}
                     alt="Product"
                 />

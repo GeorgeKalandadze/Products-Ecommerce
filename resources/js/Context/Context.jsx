@@ -8,7 +8,6 @@ import { router } from '@inertiajs/react'
     });
 
     export const AppProvider = ({children}) => {
-
         const [productsData, setProductsData] = useState({
         name:"",
         slug:"",
@@ -19,6 +18,7 @@ import { router } from '@inertiajs/react'
         description:"" });
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [cartItems, setCartItems] = useState([]);
+    const [isOpenSidebar, setOpenSidebar] = useState(false)
 
     const addCartItem = (id) => {
         axios
@@ -102,7 +102,9 @@ import { router } from '@inertiajs/react'
         cartItems,
         handleIncrement,
         handleDecrement,
-        clearCart
+        clearCart,
+        isOpenSidebar,
+        setOpenSidebar
     }}>
         {children}
     </AppContext.Provider>

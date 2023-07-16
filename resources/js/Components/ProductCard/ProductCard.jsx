@@ -11,7 +11,7 @@ const ProductCard = ({ props }) => {
     };
 
     return (
-        <div className="p-4 transition duration-300 shadow-lg w-[350px] rounded relative" onClick={() => console.log(props.id)}>
+        <div className="p-4 transition duration-300 shadow-lg  w-full rounded relative md:w-[350px]" onClick={() => console.log(props.id)}>
             {props.product_images && props.product_images.length > 0 && (
                 <img
                     src={props.product_images[0]?.name}
