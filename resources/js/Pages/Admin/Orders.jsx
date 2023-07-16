@@ -11,88 +11,14 @@ import {
 
 Chart.register(CategoryScale, LinearScale, PointElement, BarElement);
 
-const Orders = () => {
-    const UserData = [
-        {
-            id: 1,
-            month: "January",
-            userGain: 80000,
-            userLost: 823,
-        },
-        {
-            id: 2,
-            month: "February",
-            userGain: 45677,
-            userLost: 345,
-        },
-        {
-            id: 3,
-            month: "March",
-            userGain: 78888,
-            userLost: 555,
-        },
-        {
-            id: 4,
-            month: "April",
-            userGain: 90000,
-            userLost: 4555,
-        },
-        {
-            id: 5,
-            month: "May",
-            userGain: 4300,
-            userLost: 234,
-        },
-        {
-            id: 6,
-            month: "June",
-            userGain: 50000,
-            userLost: 1500,
-        },
-        {
-            id: 7,
-            month: "July",
-            userGain: 62000,
-            userLost: 1234,
-        },
-        {
-            id: 8,
-            month: "August",
-            userGain: 55000,
-            userLost: 876,
-        },
-        {
-            id: 9,
-            month: "September",
-            userGain: 38000,
-            userLost: 543,
-        },
-        {
-            id: 10,
-            month: "October",
-            userGain: 70000,
-            userLost: 987,
-        },
-        {
-            id: 11,
-            month: "November",
-            userGain: 59000,
-            userLost: 732,
-        },
-        {
-            id: 12,
-            month: "December",
-            userGain: 85000,
-            userLost: 1654,
-        },
-    ];
+const Orders = (props) => {
 
-    const [userData, setUserData] = useState({
-        labels: UserData.map((data) => data.month),
+    const [ordersData, setOrdersData] = useState({
+        labels: props.orderData.map((data) => data.month),
         datasets: [
             {
                 label: "Users Gained",
-                data: UserData.map((data) => data.userGain),
+                data: props.orderData.map((data) => data.orderCount),
                 backgroundColor: [
                     "#75BF72", // January color
                     "#FF6F69", // February color
@@ -116,7 +42,7 @@ const Orders = () => {
         <AdminPanelLayout>
             <section className="p-[16px]">
                 <h1 className="font-bold text-[30px]">Orders Statistic</h1>
-                <Bar data={userData} />
+                <Bar data={ordersData} />
             </section>
         </AdminPanelLayout>
     );

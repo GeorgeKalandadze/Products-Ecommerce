@@ -65,8 +65,39 @@ class AdminPanelController extends Controller
 
     public function renderOrderPanel(): Response
     {
-        return Inertia::render('Admin/Orders');
+        $orders = Order::selectRaw('MONTH(created_at) AS month, COUNT(*) AS orderCount')
+            ->whereYear('created_at', '=', date('Y'))
+            ->groupBy('month')
+            ->get();
+
+        $orderData = collect([
+            ['id' => 1, 'month' => 'January', 'orderCount' => 0],
+            ['id' => 2, 'month' => 'February', 'orderCount' => 0],
+            ['id' => 3, 'month' => 'March', 'orderCount' => 0],
+            ['id' => 4, 'month' => 'April', 'orderCount' => 0],
+            ['id' => 5, 'month' => 'May', 'orderCount' => 0],
+            ['id' => 6, 'month' => 'June', 'orderCount' => 0],
+            ['id' => 7, 'month' => 'July', 'orderCount' => 0],
+            ['id' => 8, 'month' => 'August', 'orderCount' => 0],
+            ['id' => 9, 'month' => 'September', 'orderCount' => 0],
+            ['id' => 10, 'month' => 'October', 'orderCount' => 0],
+            ['id' => 11, 'month' => 'November', 'orderCount' => 0],
+            ['id' => 12, 'month' => 'December', 'orderCount' => 0],
+        ]);
+
+        $modifiedOrderData = $orderData->map(function ($item) use ($orders) {
+            $order = $orders->where('month', $item['id'])->first();
+            if ($order) {
+                $item['orderCount'] = $order->orderCount;
+            }
+            return $item;
+        });
+
+        return Inertia::render('Admin/Orders', [
+            'orderData' => $modifiedOrderData,
+        ]);
     }
+
 
     public function renderUserPanel(): Response
     {
