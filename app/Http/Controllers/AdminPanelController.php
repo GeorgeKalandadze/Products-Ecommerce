@@ -23,7 +23,6 @@ class AdminPanelController extends Controller
             ->get(['name', 'description']);
         $latestOrders = Order::latest()->take(10)->get();
         $latestCustomers = Customer::with('user')->latest()->take(3)->get(['user_id']);
-
         $latestCustomers = $latestCustomers->map(function ($customer) {
             return [
                 'name' => $customer->user->name,

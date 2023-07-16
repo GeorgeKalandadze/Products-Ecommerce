@@ -7,6 +7,7 @@ use \App\Http\Controllers\SubcategoryController;
 use \App\Http\Controllers\ProductsController;
 use \App\Http\Controllers\CartController;
 use \App\Http\Controllers\CheckoutController;
+use \App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,6 +30,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/categories',GetCategoriesController::class)->name('categories');
     Route::get('/products',[ProductsController::class, 'getAllProducts']);
     Route::middleware(['admin'])->group(function () {
+        Route::get('/users',[UserController::class,'index']);
         Route::get('/{categoryId}/{subcategoryId}', SubcategoryController::class);
         Route::post('/products/create',[ProductsController::class, 'store'])->name('product.create');
         Route::post('/products/update/{id}',[ProductsController::class, 'update'])->name('products.update');
