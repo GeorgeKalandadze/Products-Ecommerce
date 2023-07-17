@@ -1,6 +1,6 @@
 import {createContext, useContext, useState, useEffect} from "react";
 import axios from "axios";
-
+import { toast } from 'react-toastify';
 
     const AppContext = createContext({
 
@@ -26,8 +26,18 @@ import axios from "axios";
                 quantity: 1,
             })
             .then((response) => {
-
-                setCartItems((cart) => [...cart, response.data.data])
+                if(response.status === 201){
+                    toast.success(response.data.message, {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        theme: "light",
+                    });
+                    setCartItems((cart) => [...cart, response.data.data])
+                }
             })
             .catch((error) => {
                console.log(error)
@@ -63,8 +73,33 @@ import axios from "axios";
     const updateCartQuantity = (cart_id,  scope) => {
         axios.put(`${window.location.protocol}//${window.location.host}/api/cart/${cart_id}/${scope}`)
             .then(response => {
-                console.log(response.data,"ressssssssssssssssssssssssssssss")
+                if(response.status === 201){
+                    toast.success(response.data.message, {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        theme: "light",
+                    });
+                    console.log(response.data,"ressssssssssssssssssssssssssssss")
+                }
             })
+            .catch((error) => {
+                toast.error("The product is out of stock", {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    progressStyle: { backgroundColor: "red" }
+                });
+            });
+
     }
 
     //clear cart items

@@ -84,9 +84,8 @@ class CartController extends Controller
                         $cartItem->quantity += 1;
                     } else {
                         return response()->json([
-                            'status' => 400,
                             'message' => 'The product is out of stock'
-                        ]);
+                        ],400);
                     }
                 }else if($scope == "dec"){
                     if($cartItem->quantity > 0) {
