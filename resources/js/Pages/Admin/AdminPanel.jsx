@@ -30,7 +30,6 @@ const AdminPanel = (props) => {
                                 <p>${order.total_price}</p>
                             </div>
                         ))}
-
                     </div>
                     <div className="grid grid-cols-2 lg:grid-cols-1 gap-6 justify-between">
                         <div className="text-center bg-[#f3f4f6]  p-4 rounded-[8px] shadow-xl col-span-2  lg:col-span-2 md:col-span-1 ">
@@ -43,18 +42,18 @@ const AdminPanel = (props) => {
                         </div>
                         <div className="text-center bg-[#f3f4f6] p-4 rounded-[8px] shadow-xl col-span-2 lg:col-span-2 md:col-span-1">
                             <h1 className="text-[20px] font-bold mb-3">Latest Customers</h1>
+                            {dashboardData.latestCustomers.length > 0 && dashboardData.latestCustomers.map((customer) => (
                             <div className="flex items-center gap-4 hover:bg-gray-200 p-2 rounded">
                                 <div className="rounded-full bg-gray-300 p-3">
                                     <PersonIcon />
                                 </div>
-                                {dashboardData.latestCustomers.length > 0 && dashboardData.latestCustomers.map((customer) => (
-                                    <div className="text-left flex flex-col gap-2">
-                                        <p className="font-medium">{customer.name}</p>
-                                        <p className="font-medium">{customer.email}</p>
-                                    </div>
-                                ))
-                                }
+                                <div className="text-left flex flex-col gap-2">
+                                   <p className="font-medium">{customer.name}</p>
+                                   <p className="font-medium">{customer.email}</p>
+                                </div>
                             </div>
+                            ))
+                            }
                         </div>
                     </div>
                 </div>

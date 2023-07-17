@@ -6,6 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete.js";
 import AdminPanelLayout from "@/Layouts/AdminPanelLayout.jsx";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 
 const Users = () => {
     const options = [10, 20, 30, 40, 50];
@@ -43,6 +44,20 @@ const Users = () => {
                 setUsers(res.data.data);
             });
     }, [searchQuery, paginate]);
+
+    const deleteUser = (userId) => {
+        axios
+            .delete(`${window.location.protocol}//${window.location.host}/api/users/${userId}`)
+            .then((response) => {
+                const deletedIndex = users.findIndex((user) => user.id === userId);
+                const updatedProducts = [...users];
+                updatedProducts.splice(deletedIndex, 1);
+                setUsers(updatedProducts);
+            })
+            .catch((error) => {
+                console.error('Error deleting user:', error);
+            });
+    };
 
     console.log(users,"users")
     return (
@@ -115,10 +130,10 @@ const Users = () => {
                                                 },
                                             }}
                                         >
-                                            <MenuItem >
-                                                <EditIcon sx={{ color: "#818cf8", marginRight: "10px" }} /> Edit
-                                            </MenuItem>
-                                            <MenuItem >
+                                            {/*<MenuItem >*/}
+                                            {/*    <ReportProblemIcon sx={{ color: "#818cf8", marginRight: "10px" }} /> Report*/}
+                                            {/*</MenuItem>*/}
+                                            <MenuItem onClick={() => deleteUser(user.id)}>
                                                 <DeleteIcon sx={{ color: "#818cf8", marginRight: "10px" }} /> Delete
                                             </MenuItem>
                                         </Menu>

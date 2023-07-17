@@ -94,7 +94,6 @@ class ProductsController extends Controller
         $search = request('search', '');
         $sortField = request('sort_field', 'id');
         $sortDirection = request('sort_direction', 'asc');
-
         $query = Product::query()
             ->where('name', 'like', "%{$search}%")
             ->orderBy($sortField, $sortDirection)

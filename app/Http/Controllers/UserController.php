@@ -12,11 +12,16 @@ class UserController extends Controller
     {
         $perPage = request('per_page', 5);
         $search = request('search', '');
-
-
         $query = User::query()
             ->where('name', 'like', "%{$search}%")
             ->paginate($perPage);
         return response()->json( $query );
+    }
+
+    public function destroy(string $id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return response()->json('deleted user');
     }
 }
