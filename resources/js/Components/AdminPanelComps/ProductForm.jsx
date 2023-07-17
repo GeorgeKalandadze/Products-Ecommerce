@@ -9,14 +9,15 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import axios from 'axios';
 import UploadImages from '@/Components/AdminPanelComps/UploadImages.jsx';
-import {useGlobalContext} from "@/Context/Context.jsx";
+import { useGlobalContext } from '@/Context/Context.jsx';
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    width: '95%',
+    maxWidth: 800,
     bgcolor: 'background.paper',
     boxShadow: 14,
     borderRadius: 1,
@@ -27,41 +28,42 @@ const style = {
     scrollbarColor: '#888 transparent',
 };
 
-const ProductForm = ({ open, close, products, setProducts}) => {
+const ProductForm = ({ open, close, products, setProducts }) => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [filteredSubcategories, setFilteredSubcategories] = useState([]);
-    const {productsData, setProductsData, selectedProduct} = useGlobalContext();
+    const { productsData, setProductsData, selectedProduct } = useGlobalContext();
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        if(close){
+        if (close) {
             setErrors({});
         }
-    },[close])
+    }, [close]);
 
     useEffect(() => {
         axios.get(`${window.location.protocol}//${window.location.host}/api/categories`).then((res) => {
-            console.log(res)
+            console.log(res);
             setCategories(res.data);
         });
     }, []);
 
     useEffect(() => {
-        if(selectedProduct){
-            setProductsData(selectedProduct)
-        }else{
+        if (selectedProduct) {
+            setProductsData(selectedProduct);
+        } else {
             setProductsData({
-                name:"",
-                slug:"",
-                quote:"",
-                price:"",
-                quantity:"",
-                published:0,
-                description:"" })
+                name: '',
+                slug: '',
+                quote: '',
+                price: '',
+                quantity: '',
+                published: 0,
+                description: '',
+            });
         }
-    },[selectedProduct])
+    }, [selectedProduct]);
 
     const handleCategoryChange = (e) => {
         const selectedCategoryId = e.target.value;
@@ -87,7 +89,7 @@ const ProductForm = ({ open, close, products, setProducts}) => {
             [name]: value,
         }));
     };
-    console.log(productsData.images,"imagessssssssssssss")
+
     const postProducts = () => {
         const formData = new FormData();
         formData.append('name', productsData.name);
@@ -99,9 +101,8 @@ const ProductForm = ({ open, close, products, setProducts}) => {
         formData.append('slug', productsData.slug);
         formData.append('subcategory_id', productsData.subcategory_id);
         productsData.images.forEach((image, index) => {
-            formData.append(`images[${index}]`, new File([image], image.name, { type: "image/jpg" }));
+            formData.append(`images[${index}]`, new File([image], image.name, { type: 'image/jpg' }));
         });
-        console.log([...formData],"formdata")
 
         const requestMethod = selectedProduct ? axios.post : axios.post;
         const requestUrl = selectedProduct
@@ -135,11 +136,6 @@ const ProductForm = ({ open, close, products, setProducts}) => {
             });
     };
 
-
-
-
-
-
     return (
         <div>
             <Modal
@@ -150,63 +146,62 @@ const ProductForm = ({ open, close, products, setProducts}) => {
             >
                 <Box sx={style} component="form" noValidate autoComplete="off">
                     <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ fontWeight: 'bold' }}>
-                        {selectedProduct?"Edit":"Create"}  Product
+                        {selectedProduct ? 'Edit' : 'Create'} Product
                     </Typography>
-                    <div className="flex justify-between mt-4">
+                    <div className="flex flex-col gap-6 mt-4 md:flex-row">
                         <InputGroup
                             label="Name"
                             placeholder="Enter Product Name"
                             type="text"
                             name="name"
-                            className="w-[350px]"
                             onChange={handleInputChange}
                             error={errors.name?.[0]}
                             value={productsData.name}
-
+                            className=" w-full  md:w-[350px]"
                         />
                         <InputGroup
                             label="Slug"
                             placeholder="Enter Product Slug"
                             type="text"
                             name="slug"
-                            className="w-[350px]"
                             onChange={handleInputChange}
                             error={errors.slug?.[0]}
                             value={productsData.slug}
+                            className=" w-full  md:w-[350px]"
                         />
                     </div>
-                    <div className="flex justify-between mt-4 mb-4">
+                    <div className="flex flex-col gap-6 mt-4 md:flex-row">
                         <InputGroup
                             label="Price"
                             placeholder="Enter Product Price"
                             type="number"
                             name="price"
-                            className="w-[350px]"
                             onChange={handleInputChange}
                             error={errors.price?.[0]}
                             value={productsData.price}
+                            className=" w-full  md:w-[350px]"
                         />
                         <InputGroup
                             label="Quantity"
-                            placeholder="Enter Product qunatity"
+                            placeholder="Enter Product Quantity"
                             type="number"
                             name="quantity"
-                            className="w-[350px]"
                             onChange={handleInputChange}
                             error={errors.quantity?.[0]}
                             value={productsData.quantity}
+                            className=" w-full  md:w-[350px]"
+                        />
+                    </div>
+                        <InputGroup
+                            label="Quote"
+                            placeholder="Enter Product Quote"
+                            type="text"
+                            name="quote"
+                            onChange={handleInputChange}
+                            error={errors.quote?.[0]}
+                            value={productsData.quote}
                         />
 
-                    </div>
-                    <InputGroup
-                        label="Quote"
-                        placeholder="Enter Product Quote"
-                        type="text"
-                        name="quote"
-                        onChange={handleInputChange}
-                        error={errors.quote?.[0]}
-                        value={productsData.quote}
-                    />
                     <div className="mt-4 flex flex-col gap-2">
                         <label className="font-medium text-[18px]">Description</label>
                         <textarea
@@ -248,7 +243,7 @@ const ProductForm = ({ open, close, products, setProducts}) => {
                                 name="subcategory_id"
                                 onChange={(e) => {
                                     setSelectedSubcategory(e.target.value);
-                                    handleInputChange(e); // Call handleInputChange here
+                                    handleInputChange(e);
                                 }}
                             >
                                 {filteredSubcategories.map((subcategory) => (
@@ -266,13 +261,13 @@ const ProductForm = ({ open, close, products, setProducts}) => {
                         />
                         <label className="font-medium">If you want your Product to be published, check this checkbox.</label>
                     </div>
-                    <UploadImages error={errors.images?.[0]}/>
+                    <UploadImages error={errors.images?.[0]} />
                     <button
                         onClick={postProducts}
                         type="button"
                         className="mt-6 bg-[#423dce] text-white px-6 py-3 font-medium rounded"
                     >
-                        {selectedProduct?"Edit":"Create"} Product
+                        {selectedProduct ? 'Edit' : 'Create'} Product
                     </button>
                 </Box>
             </Modal>
