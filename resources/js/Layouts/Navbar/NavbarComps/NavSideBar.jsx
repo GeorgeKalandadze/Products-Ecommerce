@@ -36,13 +36,13 @@ const PersistentDrawerLeft = () => {
                         <CloseOutlinedIcon sx={{ color: 'white' }} />
                     </ListItemIcon>
                 </ListItemButton>
-                <Link >
+                <Link href={route('orders')}>
                     <ListItem disablePadding >
                         <ListItemButton>
                             <ListItemIcon>
                                 <MenuIcon sx={{ color: 'white' }} />
                             </ListItemIcon>
-                            <ListItemText primary={'Orders'} sx={{ color: 'white' }} />
+                            <ListItemText primary={'My Orders'} sx={{ color: 'white' }} />
                         </ListItemButton>
                     </ListItem>
                 </Link>

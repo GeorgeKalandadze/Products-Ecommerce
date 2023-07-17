@@ -31,6 +31,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth','verified'] )->group(function () {
     Route::get('/', [ProductsController::class, 'index'])->name('home');
+    Route::get('/orders',[\App\Http\Controllers\OrderController::class,'index'])->name('orders');
     Route::get('/checkout/success', [CheckoutController::class, 'renderSuccess'])->name('checkout.success');
     Route::get('/checkout/failure', [CheckoutController::class, 'renderFailure'])->name('checkout.failure');
     Route::get('/products/{id}', [ProductsController::class, 'show']);
