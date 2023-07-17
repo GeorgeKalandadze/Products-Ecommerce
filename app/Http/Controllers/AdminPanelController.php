@@ -21,12 +21,11 @@ class AdminPanelController extends Controller
         $topProducts = Product::orderBy('price', 'desc')
             ->take(3)
             ->get(['name', 'description']);
-        $latestOrders = Order::latest()->take(10)->get();
         $latestCustomers = Customer::with('user')->latest()->take(3)->get(['user_id']);
         $latestCustomers = $latestCustomers->map(function ($customer) {
             return [
-                'name' => $customer->user->name,
-                'email' => $customer->user->email,
+                'name' => $customer->user ? $customer->user->name : null,
+                'email' => $customer->user ? $customer->user->email : null,
             ];
         });
         $latestOrders = Order::latest()

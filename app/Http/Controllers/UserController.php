@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -30,9 +31,13 @@ class UserController extends Controller
             return response()->json('Cannot delete admin user', 403);
         }
 
+        $customer = Customer::where('user_id', $user->id)->first();
+        if ($customer) {
+            $customer->delete();
+        }
         $user->delete();
-
         return response()->json('Deleted user');
     }
+
 
 }
