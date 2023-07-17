@@ -29,6 +29,20 @@ class AdminPanelController extends Controller
                 'email' => $customer->user->email,
             ];
         });
+        $latestOrders = Order::latest()
+            ->take(10)
+            ->with(['user', 'items'])
+            ->get();
+
+        $latestOrdersData = $latestOrders->map(function ($order) {
+            return [
+                'id' => $order->id,
+                'created_at' => $order->created_at->format('Y-m-d H:i:s'),
+                'username' => $order->user->name,
+                'items_count' => $order->items->count(),
+                'total_price' => $order->total_price
+            ];
+        });
 
         $data = [
             'activeCustomersCount' => $activeCustomersCount,
@@ -36,8 +50,8 @@ class AdminPanelController extends Controller
             'totalIncomes' => $totalIncomes,
             'productsCount' => $productsCount,
             'topProducts' => $topProducts,
-            'latestOrders' => $latestOrders,
             'latestCustomers' => $latestCustomers,
+            'latestOrders' => $latestOrdersData,
         ];
 
         return Inertia::render('Admin/AdminPanel', compact('data'));

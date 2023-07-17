@@ -21,18 +21,21 @@ const AdminPanel = (props) => {
                 <div className="mt-6 grid grid-cols-1 gap-6 justify-between lg:grid-cols-[63%,35%]">
                     <div className="bg-[#f3f4f6] p-4 rounded-[8px] shadow-xl h-[100vh] ">
                         <h1 className="text-[20px] font-bold mb-3">Latest 10 order</h1>
-                        <div className="flex justify-between items-center hover:bg-gray-200 p-2 rounded">
-                            <div className="flex flex-col gap-3">
-                                <h1><span className="text-[#423dce] font-semibold">Order #2</span> created 1 week ago. 2 items</h1>
-                                <p>George</p>
+                        {dashboardData.latestOrders.map((order) => (
+                            <div className="flex justify-between items-center hover:bg-gray-200 p-2 rounded">
+                                <div className="flex flex-col gap-3">
+                                    <h1><span className="text-[#423dce] font-semibold">Order #{order.id}</span> created at {order.created_at}. {order.tems_count} items</h1>
+                                    <p>{order.username}</p>
+                                </div>
+                                <p>${order.total_price}</p>
                             </div>
-                            <p>$7,000.0</p>
-                        </div>
+                        ))}
+
                     </div>
                     <div className="grid grid-cols-2 lg:grid-cols-1 gap-6 justify-between">
                         <div className="text-center bg-[#f3f4f6]  p-4 rounded-[8px] shadow-xl col-span-2  lg:col-span-2 md:col-span-1 ">
                             <h1 className="text-[20px] font-bold mb-4">The most popular products</h1>
-                            {dashboardData.topProducts.map((product) => (
+                            {dashboardData.topProducts.length > 0 && dashboardData.topProducts.map((product) => (
                                 <Accordion name={product.name} desc={product.description}/>
 
                             ))}
@@ -44,7 +47,7 @@ const AdminPanel = (props) => {
                                 <div className="rounded-full bg-gray-300 p-3">
                                     <PersonIcon />
                                 </div>
-                                {dashboardData.latestCustomers.map((customer) => (
+                                {dashboardData.latestCustomers.length > 0 && dashboardData.latestCustomers.map((customer) => (
                                     <div className="text-left flex flex-col gap-2">
                                         <p className="font-medium">{customer.name}</p>
                                         <p className="font-medium">{customer.email}</p>

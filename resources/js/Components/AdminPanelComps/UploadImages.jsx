@@ -55,7 +55,10 @@ const UploadImages = ({error}) => {
 
     return (
         <>
-            <label className="font-medium text-[18px] ">Upload Product Images</label>
+            <div className="flex justify-between">
+                <label className="font-medium text-[18px] ">Upload Product Images</label>
+                {fileList.length > 0 && <button className="text-gray-500 font-medium underline" onClick={() => setFileList([])}>Remove all Image</button>}
+            </div>
             <div
                 ref={wrapperRef}
                 className=" relative w-full h-48 border-2 border-dashed border-gray-500 rounded-md flex items-center justify-center bg-gray-100 hover:opacity-60 mt-2"
