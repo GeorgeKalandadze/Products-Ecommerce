@@ -33,7 +33,8 @@ const CartItemModal = ({open, close}) => {
                 {},
                 {
                     headers: {
-                        "Access-Control-Allow-Origin": "XMLHttpRequest",
+                        "Access-Control-Allow-Origin" : "*",
+                        'Access-Control-Allow-Headers': '*'
                     },
                 }
             )

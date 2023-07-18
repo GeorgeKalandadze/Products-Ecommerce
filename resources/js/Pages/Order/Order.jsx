@@ -22,6 +22,16 @@ export default function Order (props){
         setAnchorEl(newAnchorElArray);
     };
 
+    const makeCheckout = async (orderId) => {
+        try {
+            const response = await axios.post(`${window.location.protocol}//${window.location.host}/api/checkout/${orderId}`);
+            window.location.href = response.data.session_url
+        } catch (error) {
+            console.log(error);
+            // Handle error
+        }
+    };
+
     console.log(props)
     return (
         <ProductsLayout>
@@ -77,7 +87,7 @@ export default function Order (props){
                                         },
                                     }}
                                 >
-                                    <MenuItem >
+                                    <MenuItem onClick={() => makeCheckout(order.id)}>
                                         <PaymentIcon sx={{ color: "green", marginRight: "10px" }} /> Pay
                                     </MenuItem>
                                     <MenuItem >
@@ -87,7 +97,6 @@ export default function Order (props){
                             </td>
                         </tr>
                     ))}
-
                     </tbody>
                 </table>
             </div>

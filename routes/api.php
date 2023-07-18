@@ -24,6 +24,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return $request->user();
     })->name('user');
     Route::post('/checkout',[CheckoutController::class, 'checkout']);
+    Route::post('/checkout/{order}', [CheckoutController::class, 'checkoutOrder'])->name('cart.checkout-order');
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class,'index']);
         Route::post('/add', [CartController::class,'add']);

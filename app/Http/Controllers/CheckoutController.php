@@ -24,7 +24,6 @@ class CheckoutController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = $request->user();
-//        $user = User::find(1);
 
         \Stripe\Stripe::setApiKey(getenv('STRIPE_SECRET_KEY'));
 
@@ -41,7 +40,6 @@ class CheckoutController extends Controller
                     'currency' => 'usd',
                     'product_data' => [
                         'name' => $product->name,
-//                        'images' => [$product->image]
                     ],
                     'unit_amount' => $product->price * 100,
                 ],
@@ -53,9 +51,6 @@ class CheckoutController extends Controller
                 'unit_price' => $product->price
             ];
         }
-//        dd(route('checkout.failure', [], true));
-
-//        dd(route('checkout.success', [], true) . '?session_id={CHECKOUT_SESSION_ID}');
 
         $session = \Stripe\Checkout\Session::create([
             'line_items' => $lineItems,
@@ -64,7 +59,6 @@ class CheckoutController extends Controller
             'cancel_url' => route('checkout.failure', [], true),
         ]);
 
-        // Create Order
         $orderData = [
             'total_price' => $totalPrice,
             'status' => OrderStatus::Unpaid,
@@ -73,13 +67,15 @@ class CheckoutController extends Controller
         ];
         $order = Order::create($orderData);
 
-        // Create Order Items
         foreach ($orderItems as $orderItem) {
+            $product = Product::find($orderItem['product_id']);
+            $product->quantity -= $orderItem['quantity'];
+            $product->save();
+
             $orderItem['order_id'] = $order->id;
             OrderItem::create($orderItem);
         }
 
-        // Create Payment
         $paymentData = [
             'order_id' => $order->id,
             'amount' => $totalPrice,
@@ -94,7 +90,9 @@ class CheckoutController extends Controller
         CartItem::where(['user_id' => $user->id])->delete();
 
         return response()->json(['session_url' => $session->url]);
+//        return redirect($session->url);
     }
+
 
 
 
@@ -103,8 +101,7 @@ class CheckoutController extends Controller
     public static function getCartItems()
     {
         $request = \request();
-//        $user = $request->user();
-        $user = User::find(1);
+        $user = $request->user();
         if ($user) {
             return CartItem::where('user_id', $user->id)->get()->map(
                 fn($item) => ['product_id' => $item->product_id, 'quantity' => $item->quantity]
@@ -170,6 +167,38 @@ class CheckoutController extends Controller
         $order = $payment->order;
         $order->status = OrderStatus::Paid->value;
         $order->update();
+    }
+
+    public function checkoutOrder(Order $order, Request $request)
+    {
+        \Stripe\Stripe::setApiKey(getenv('STRIPE_SECRET_KEY'));
+        $lineItems = [];
+        foreach ($order->items as $item) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => $item->product->name,
+//                        'images' => [$product->image]
+                    ],
+                    'unit_amount' => $item->unit_price * 100,
+                ],
+                'quantity' => $item->quantity,
+            ];
+        }
+
+        $session = \Stripe\Checkout\Session::create([
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => route('checkout.success', [], true) . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout.failure', [], true),
+        ]);
+
+        $order->payment->session_id = $session->id;
+        $order->payment->save();
+
+        return response()->json(['session_url' => $session->url]);
+//        return redirect($session->url);
     }
 
 
