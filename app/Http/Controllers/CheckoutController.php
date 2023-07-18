@@ -13,8 +13,10 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CheckoutController extends Controller
 {
@@ -129,13 +131,55 @@ class CheckoutController extends Controller
     }
 
 
+    public function success(Request $request): Response
+    {
+
+        $user = $request->user();
+        \Stripe\Stripe::setApiKey(getenv('STRIPE_SECRET_KEY'));
+
+        try {
+            $session_id = $request->get('session_id');
+            $session = \Stripe\Checkout\Session::retrieve($session_id);
+            if (!$session) {
+                return Inertia::render('Checkout/Failure', ['message' => 'Invalid Session ID']);
+            }
+
+            $payment = Payment::query()
+                ->where(['session_id' => $session_id])
+                ->whereIn('status', [PaymentStatus::Pending, PaymentStatus::Paid])
+                ->first();
+            if (!$payment) {
+                throw new NotFoundHttpException();
+            }
+            if ($payment->status === PaymentStatus::Pending->value) {
+                $this->updateOrderAndSession($payment);
+            }
+            $customer = \Stripe\Customer::retrieve($session->customer);
+            return Inertia::render('Checkout/Success', compact('customer'));
+        } catch (NotFoundHttpException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            return Inertia::render('Checkout/Failure', ['message' => $e->getMessage()]);
+        }
+    }
+
+    private function updateOrderAndSession(Payment $payment)
+    {
+        $payment->status = PaymentStatus::Paid->value;
+        $payment->update();
+        $order = $payment->order;
+        $order->status = OrderStatus::Paid->value;
+        $order->update();
+    }
+
+
     public function renderSuccess() : Response
     {
         return Inertia::render('Checkout/Success');
     }
-
-    public function renderFailure() : Response
-    {
-        return Inertia::render('Checkout/Failure');
-    }
+//
+//    public function renderFailure() : Response
+//    {
+//        return Inertia::render('Checkout/Failure');
+//    }
 }

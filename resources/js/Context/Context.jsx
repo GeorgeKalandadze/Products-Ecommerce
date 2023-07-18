@@ -17,7 +17,9 @@ import { toast } from 'react-toastify';
         description:"" });
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [cartItems, setCartItems] = useState([]);
-    const [isOpenSidebar, setOpenSidebar] = useState(false)
+    const [isOpenSidebar, setOpenSidebar] = useState(false);
+    const [user, setUser] = useState({});
+
 
     const addCartItem = (id) => {
         axios
@@ -123,6 +125,15 @@ import { toast } from 'react-toastify';
             });
     }
 
+        useEffect(() => {
+            axios
+                .get(`${window.location.protocol}//${window.location.host}/api/user`, )
+                .then((res) => {
+                    console.log(res,"resssssssss")
+                    setUser(res.data)
+                });
+        }, []);
+
     return <AppContext.Provider value={{
         productsData,
         setProductsData,
@@ -134,7 +145,8 @@ import { toast } from 'react-toastify';
         handleDecrement,
         clearCart,
         isOpenSidebar,
-        setOpenSidebar
+        setOpenSidebar,
+        user
     }}>
         {children}
     </AppContext.Provider>

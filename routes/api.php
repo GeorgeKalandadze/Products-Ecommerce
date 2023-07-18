@@ -20,6 +20,9 @@ use \App\Http\Controllers\UserController;
 */
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    })->name('user');
     Route::post('/checkout',[CheckoutController::class, 'checkout']);
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class,'index']);

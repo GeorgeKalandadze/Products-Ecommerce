@@ -7,11 +7,12 @@ import CartItemModal from "@/Components/CartIems/CartItemModal.jsx";
 import SearchModal from "@/Components/SearchModal.jsx";
 import {useGlobalContext} from "@/Context/Context.jsx";
 import MenuIcon from '@mui/icons-material/Menu.js';
+import {Link} from "@inertiajs/react";
 
 const Navbar = () => {
     const [openShopCart, setOpenShopCart] = useState(false)
     const [openSearchModal, setOpenSearchModal] = useState(false)
-    const {isOpenSidebar, setOpenSidebar} = useGlobalContext();
+    const {isOpenSidebar, setOpenSidebar, user} = useGlobalContext();
 
     return (
         <>
@@ -25,6 +26,11 @@ const Navbar = () => {
             />
         <div className="shadow-md p-6 px-2 flex justify-between md:px-[80px]">
             <NavLogo />
+            {/*{user.is_admin ?*/}
+            {/*    <Link href={route('adminPanel.adminPanel')}>*/}
+            {/*        <button className="bg-[#194f7d] text-white font-medium px-4 rounded">Go to AdminPanel</button>*/}
+            {/*    </Link>: ""*/}
+            {/*}*/}
             <div className="flex gap-4 items-center">
                 <SearchIcon className="cursor-pointer" onClick={() => setOpenSearchModal(true)}/>
                 <ShoppingCartOutlinedIcon className="cursor-pointer" onClick={() => setOpenShopCart(true)}/>

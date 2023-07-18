@@ -1,6 +1,7 @@
 import ProductsLayout from "@/Layouts/ProductsLayout";
 
-const Failure = () => {
+const Failure = (props) => {
+    console.log(props,"props")
     return(
         <ProductsLayout>
             <div>
