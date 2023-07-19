@@ -32,6 +32,16 @@ export default function Order (props){
         }
     };
 
+    const cancelCheckout = async (orderId) => {
+        try {
+            const response = await axios.post(`${window.location.protocol}//${window.location.host}/api/checkout/cancel/${orderId}`);
+            console.log(response)
+        } catch (error) {
+            console.log(error);
+            // Handle error
+        }
+    };
+
     console.log(props)
     return (
         <ProductsLayout>
@@ -90,7 +100,7 @@ export default function Order (props){
                                     <MenuItem onClick={() => makeCheckout(order.id)}>
                                         <PaymentIcon sx={{ color: "green", marginRight: "10px" }} /> Pay
                                     </MenuItem>
-                                    <MenuItem >
+                                    <MenuItem onClick={() => cancelCheckout(order.id)}>
                                         <CancelIcon sx={{ color: "red", marginRight: "10px" }} /> Cancel
                                     </MenuItem>
                                 </Menu>

@@ -25,6 +25,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     })->name('user');
     Route::post('/checkout',[CheckoutController::class, 'checkout']);
     Route::post('/checkout/{order}', [CheckoutController::class, 'checkoutOrder'])->name('cart.checkout-order');
+    Route::post('/checkout/cancel/{orderId}', [CheckoutController::class, 'cancelCheckout'])->name('checkout.cancel');
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class,'index']);
         Route::post('/add', [CartController::class,'add']);

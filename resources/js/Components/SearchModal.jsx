@@ -44,7 +44,7 @@ const SearchModal = ({ open, close }) => {
 
     const highlightText = (text, query) => {
         const regex = new RegExp(`(${query})`, "gi");
-        return text.replace(regex, "<span style='color: #2563eb' '>$1</span>");
+        return text.replace(regex, "<span style='color: #008bd2' '>$1</span>");
     };
 
 

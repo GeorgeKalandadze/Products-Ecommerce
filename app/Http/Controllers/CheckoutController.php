@@ -201,9 +201,35 @@ class CheckoutController extends Controller
 //        return redirect($session->url);
     }
 
-    public function cancelCheckout()
+    public function cancelCheckout($orderId)
     {
+        $user = auth()->user();
+        $order = Order::where('id', $orderId)
+            ->where('status', OrderStatus::Unpaid)
+            ->where('created_by',$user->id)
+            ->first();
+
+        if ($order) {
+            $order->status = OrderStatus::Cancelled;
+            $order->save();
+
+            $payment = $order->payment;
+            $payment->status = PaymentStatus::Failed;
+            $payment->save();
+        }
+
+        return response()->json('order canceled succesfully');
 
     }
 
+
+    public function renderSuccess() : Response
+    {
+        return Inertia::render('Checkout/Success');
+    }
+//
+//    public function renderFailure() : Response
+//    {
+//        return Inertia::render('Checkout/Failure');
+//    }
 }
