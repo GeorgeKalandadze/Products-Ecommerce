@@ -1,31 +1,34 @@
-import {Modal} from "@mui/material";
+import { Modal } from "@mui/material";
 import Box from "@mui/material/Box";
-import ProdImg from '../assets/laptop.jpg';
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "@inertiajs/react";
+import SearchIcon from '@mui/icons-material/Search';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 500,
+    width: 700,
     bgcolor: 'background.paper',
     boxShadow: 14,
-    p: 4,
     maxHeight: '95vh',
     overflowY: 'auto',
     scrollbarWidth: 'thin',
     scrollbarColor: '#888 transparent',
-    border:0,
-    borderRadius:"4px",
-    minHeight:"80vh"
+    border: 0,
+    borderRadius: "4px",
+    minHeight: "80vh"
 };
 
-const SearchModal = ({open, close}) => {
+
+const SearchModal = ({ open, close }) => {
     const [query, setQuery] = useState("");
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState([]);
+
     useEffect(() => {
         axios
             .get(`${window.location.protocol}//${window.location.host}/api/products`, {
@@ -38,37 +41,52 @@ const SearchModal = ({open, close}) => {
                 console.log(res)
             });
     }, [query]);
-    return(
+
+    const highlightText = (text, query) => {
+        const regex = new RegExp(`(${query})`, "gi");
+        return text.replace(regex, "<span style='color: #2563eb' '>$1</span>");
+    };
+
+
+    return (
         <div>
             <Modal
                 open={open}
                 onClose={close}
             >
                 <Box sx={style}>
-                    <input
-                        placeholder="Search Product"
-                        className="bg-transparent focus:outline-none border-b-2 w-full pb-2"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                    />
-                    <div className="mt-4">
+                    <div className="flex border-b-2  p-4 items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <SearchIcon sx={{ color: "gray" }} />
+                            <input
+                                placeholder="Search Product"
+                                className="bg-transparent focus:outline-none  w-full "
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                            />
+                        </div>
+                        <button className="text-[12px] font-extrabold border-2 px-1 py-0.5 rounded dark:group-hover:shadow" onClick={close}>ESC</button>
+                    </div>
+                    <div className="mt-4 p-4">
                         {products.length > 0 && products.map((product) => (
-                            <Link href={`/products/${product.id}`}>
-                            <div className="flex gap-4 hover:bg-gray-200 p-2 shadow-sm" >
-                                <img src={product.product_images[0].name} className="w-[70px] h-[60px] rounded"/>
-                                <div className="flex flex-col justify-between">
-                                    <p className="font-semibold">{product.name}</p>
-                                    <p>{product.price}</p>
+                            <Link href={`/products/${product.id}`} key={product.id}>
+                                <div className="flex w-full justify-between items-center  bg-gray-50 p-3 shadow-sm rounded mb-4 hover:bg-gray-200">
+                                    <div className="flex gap-4">
+                                        <img src={product.product_images[0].name} className="w-[70px] h-[60px] rounded" />
+                                        <div className="flex flex-col justify-between">
+                                            <p className="font-semibold" dangerouslySetInnerHTML={{ __html: highlightText(product.name, query) }} />
+                                            <p>{product.quote}</p>
+                                        </div>
+                                    </div>
+                                    <NavigateNextIcon />
                                 </div>
-                            </div>
                             </Link>
                         ))}
-
                     </div>
                 </Box>
             </Modal>
         </div>
-    )
+    );
 }
 
-export default SearchModal
+export default SearchModal;

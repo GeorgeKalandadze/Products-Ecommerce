@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import NavLogo from "@/Layouts/Navbar/NavbarComps/NavLogo";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-
 import SearchIcon from '@mui/icons-material/Search';
 import CartItemModal from "@/Components/CartIems/CartItemModal.jsx";
 import SearchModal from "@/Components/SearchModal.jsx";

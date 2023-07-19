@@ -201,14 +201,9 @@ class CheckoutController extends Controller
 //        return redirect($session->url);
     }
 
-
-    public function renderSuccess() : Response
+    public function cancelCheckout()
     {
-        return Inertia::render('Checkout/Success');
+
     }
-//
-//    public function renderFailure() : Response
-//    {
-//        return Inertia::render('Checkout/Failure');
-//    }
+
 }
