@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+require_once app_path('Helpers/calculatePercentage.php');
 
 class CheckoutController extends Controller
 {
@@ -34,14 +35,19 @@ class CheckoutController extends Controller
         $totalPrice = 0;
         foreach ($products as $product) {
             $quantity = $cartItems[$product->id]['quantity'];
-            $totalPrice += $product->price * $quantity;
+            if ($product->discount != 0) {
+                $price = calculatePercentage($product->price,$product->discount);
+            } else {
+                $price = $product->price;
+            }
+            $totalPrice += $price * $quantity;
             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
                         'name' => $product->name,
                     ],
-                    'unit_amount' => $product->price * 100,
+                    'unit_amount' => $price * 100,
                 ],
                 'quantity' => $quantity,
             ];
