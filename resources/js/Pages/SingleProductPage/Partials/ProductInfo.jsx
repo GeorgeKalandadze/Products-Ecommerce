@@ -24,11 +24,11 @@ const ProductInfo = ({ product }) => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <h1 className="font-black text-[28px]">${product.price}</h1>
-                    <h2 className="font-bold text-[#008bd2] w-[51px] h-[27px] bg-[#008bd2] bg-opacity-30 flex items-center justify-center rounded-[6px]">
+                    {product.discount !== 0 && <h2 className="font-bold text-[#008bd2] w-[51px] h-[27px] bg-[#008bd2] bg-opacity-30 flex items-center justify-center rounded-[6px]">
                         ${product.discount}%
-                    </h2>
+                    </h2>}
                 </div>
-                <h2 className="text-[18px]">${product.discountedPrice}</h2>
+                {product.discount !== 0 && <h2 className="text-[18px]">${product.discountedPrice}</h2>}
             </div>
             <div className="flex flex-col gap-6  items-center justify-between xl:flex-row ">
                 <div className={`bg-[#e7eaf1] py-[14px] w-full flex rounded-[10px] ${isCartEmpty ? 'opacity-50' : ''} xl:w-auto`}>

@@ -21,10 +21,17 @@ const style = {
 
 const CartItemModal = ({open, close}) => {
     const {cartItems, handleDecrement, handleIncrement, clearCart} = useGlobalContext()
-
-    const totalPrice = () => {
+    console.log(cartItems,"itemsssssssssss")
+    const subTotalPrice = () => {
         return cartItems.reduce((accum, next) => accum + next.product.price * next.quantity, 0)
     }
+
+    const totalPrice = () => {
+        return cartItems.reduce((accum, next) => {
+            const price = next.product.discountedPrice || next.product.price;
+            return accum + price * next.quantity;
+        }, 0);
+    };
 
     const makeCheckout = () => {
         axios
@@ -89,11 +96,11 @@ const CartItemModal = ({open, close}) => {
                         <div className="mt-4 flex flex-col gap-4">
                             <div className="flex justify-between">
                                 <p className="text-gray-500">Subtotal</p>
-                                <p className="font-medium">90.00$</p>
+                                <p className="font-medium">{subTotalPrice()}$</p>
                             </div>
                             <div className="flex justify-between">
                                 <p className="text-gray-500">Shipping</p>
-                                <p className="font-medium">10.00$</p>
+                                <p className="font-medium">{subTotalPrice() - totalPrice()}$</p>
                             </div>
                             <div className="flex justify-between">
                                 <p className="text-gray-500 font-bold">Total</p>
