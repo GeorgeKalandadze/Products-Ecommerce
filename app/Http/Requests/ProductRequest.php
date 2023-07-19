@@ -26,6 +26,7 @@ class ProductRequest extends FormRequest
             'slug' => ['required', 'max:2000','string','min:5', 'unique:products'],
             'quote' => ['required', 'string','min:10'],
             'price' => ['required', 'numeric'],
+            'discount' => ['nullable', 'numeric', 'between:0,100'],
             'description' => ['required', 'string','min:20'],
             'published' => ['boolean'],
             'quantity' => ['required', 'numeric', 'integer', 'min:0'],

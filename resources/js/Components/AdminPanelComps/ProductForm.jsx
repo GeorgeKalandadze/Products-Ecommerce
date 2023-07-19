@@ -61,6 +61,7 @@ const ProductForm = ({ open, close, products, setProducts }) => {
                 quantity: '',
                 published: 0,
                 description: '',
+                discount:null
             });
         }
     }, [selectedProduct]);
@@ -90,11 +91,14 @@ const ProductForm = ({ open, close, products, setProducts }) => {
         }));
     };
 
+    // console.log(productsData,"proddata")
+
     const postProducts = () => {
         const formData = new FormData();
         formData.append('name', productsData.name);
         formData.append('description', productsData.description);
         formData.append('price', productsData.price);
+        formData.append('discount', productsData.discount);
         formData.append('published', productsData.published);
         formData.append('quantity', productsData.quantity);
         formData.append('quote', productsData.quote);
@@ -115,6 +119,7 @@ const ProductForm = ({ open, close, products, setProducts }) => {
             },
         })
             .then((response) => {
+                console.log(formData,"formdata")
                 if (selectedProduct) {
                     // Handle update success
                     const updatedProduct = response.data;
@@ -201,6 +206,15 @@ const ProductForm = ({ open, close, products, setProducts }) => {
                             error={errors.quote?.[0]}
                             value={productsData.quote}
                         />
+                    <InputGroup
+                        label="Discount"
+                        placeholder="Enter Product Discount"
+                        type="number"
+                        name="discount"
+                        onChange={handleInputChange}
+                        error={errors.discount?.[0]}
+                        value={productsData.discount}
+                    />
 
                     <div className="mt-4 flex flex-col gap-2">
                         <label className="font-medium text-[18px]">Description</label>

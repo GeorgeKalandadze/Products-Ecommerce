@@ -19,7 +19,8 @@ class Product extends Model
         'price',
         'quote',
         'subcategory_id',
-        'published'
+        'published',
+        'discount'
     ];
 
     protected $attributes = [

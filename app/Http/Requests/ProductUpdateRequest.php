@@ -29,6 +29,7 @@ class ProductUpdateRequest extends FormRequest
             'price' => ['required', 'numeric'],
             'description' => ['required', 'string','min:20'],
             'published' => ['boolean'],
+            'discount' => ['nullable', 'numeric', 'between:0,100'],
             'quantity' => ['required', 'numeric', 'integer', 'min:0'],
             'subcategory_id' => ['nullable'],
             'images' => ['nullable', 'array', 'size:4'],

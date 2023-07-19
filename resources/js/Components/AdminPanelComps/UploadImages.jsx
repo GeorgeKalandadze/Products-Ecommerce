@@ -43,15 +43,12 @@ const UploadImages = ({error}) => {
         }));
     }, [fileList]);
 
-    console.log(fileList, 'filelist');
 
 
     const fileRemove = (file) => {
         const updatedList = fileList.filter((item) => item !== file);
         setFileList(updatedList);
     };
-
-    console.log(fileList,"filelist")
 
     return (
         <>

@@ -50,6 +50,7 @@ class ProductsController extends Controller
                 'quote' => $data['quote'],
                 'published' => $data['published'],
                 'price' => $data['price'],
+                'discount' => $data['discount'],
                 'subcategory_id' => $data['subcategory_id']
             ]);
             $images = $data['images'];
@@ -86,7 +87,6 @@ class ProductsController extends Controller
            'productInfo' => $product,
            'productImages' => $product->productImages,
        ]);
-
     }
 
     public function getAllProducts(){

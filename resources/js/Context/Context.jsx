@@ -14,7 +14,9 @@ import { toast } from 'react-toastify';
         price:null,
         quantity:null,
         published:0,
-        description:"" });
+        description:"",
+        discount:null
+        });
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [cartItems, setCartItems] = useState([]);
     const [isOpenSidebar, setOpenSidebar] = useState(false);
