@@ -13,6 +13,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 const ProductsPanel = (props) => {
     const options = [5, 10, 30, 40, 50];
+
     const [anchorEl, setAnchorEl] = useState([]);
     const [openCreateProduct, setOpenCreateProduct] = useState(false);
     const open = Boolean(anchorEl);

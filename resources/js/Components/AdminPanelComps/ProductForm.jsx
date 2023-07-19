@@ -122,13 +122,13 @@ const ProductForm = ({ open, close, products, setProducts }) => {
                 console.log(formData,"formdata")
                 if (selectedProduct) {
                     // Handle update success
-                    const updatedProduct = response.data;
+                    const updatedProduct = response.data.data;
                     setProducts((prevProducts) =>
                         prevProducts.map((product) => (product.id === updatedProduct.id ? updatedProduct : product))
                     );
                 } else {
                     // Handle create success
-                    const createdProduct = response.data;
+                    const createdProduct = response.data.data;
                     setProducts((prevProducts) => [...prevProducts, createdProduct]);
                 }
                 setErrors({});

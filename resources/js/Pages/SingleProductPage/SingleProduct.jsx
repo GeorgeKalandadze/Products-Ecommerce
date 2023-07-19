@@ -4,8 +4,9 @@ import ImagesSection from "@/Pages/SingleProductPage/Partials/ImagesSection.jsx"
 import ProductInfo from "@/Pages/SingleProductPage/Partials/ProductInfo.jsx";
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
+
 export default function SingleProduct(props){
-    const product = props.productInfo
+    const product = props.productInfo.data
 
     return (
         <ProductsLayout>

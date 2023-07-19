@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Http\Requests\ProductUpdateRequestRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class ProductsController extends Controller
     {
         $products = Product::with('productImages')->get();
         return Inertia::render('Product/Products',[
-            'products' => $products->toJson()
+            'products' => ProductResource::collection($products)
         ]);
     }
 
@@ -39,7 +40,6 @@ class ProductsController extends Controller
     public function store(ProductRequest $request)
     {
         try {
-
             DB::beginTransaction();
             $data = $request->validated();
             $product = Product::create([
@@ -53,6 +53,7 @@ class ProductsController extends Controller
                 'discount' => $data['discount'],
                 'subcategory_id' => $data['subcategory_id']
             ]);
+
             $images = $data['images'];
             foreach ($images as $index => $image) {
                 $imageName = $product->id  . time()  . $index . $image->getClientOriginalName();
@@ -61,20 +62,19 @@ class ProductsController extends Controller
                 ProductImage::create([
                     'product_id' => $product->id,
                     'name' => env('APP_URL').Storage::url('product_images/' . $imageName),
-//                    'name' => $imageName,
                     'size' => $image->getSize(),
                     'type' => $image->getMimeType(),
                 ]);
             }
+
             DB::commit();
             $product->load('productImages');
 
-            return response()->json($product);
+            return new ProductResource($product);
         } catch (Exception $exception) {
             DB::rollBack();
             throw $exception;
         }
-
     }
 
     /**
@@ -84,7 +84,7 @@ class ProductsController extends Controller
     {
        $product = Product::find($id);
        return Inertia::render('SingleProductPage/SingleProduct', [
-           'productInfo' => $product,
+           'productInfo' => new ProductResource($product),
            'productImages' => $product->productImages,
        ]);
     }
@@ -113,18 +113,20 @@ class ProductsController extends Controller
 
     public function update(ProductUpdateRequest $request, $id)
     {
-
         try {
             $data = $request->validated();
             $product = Product::find($id);
             $product->update($data);
+
             if (isset($data['images'])) {
                 $existingImages = $product->productImages;
                 $newImages = $data['images'];
+
                 foreach ($existingImages as $existingImage) {
                     Storage::delete($existingImage->name);
                     $existingImage->delete();
                 }
+
                 foreach ($newImages as $index => $image) {
                     $imageName = $product->id  . time()  . $index  . $image->getClientOriginalName();
                     $image->storeAs('public/product_images', $imageName);
@@ -132,17 +134,15 @@ class ProductsController extends Controller
                     ProductImage::create([
                         'product_id' => $product->id,
                         'name' => env('APP_URL').Storage::url('product_images/' . $imageName),
-//                        'name' => $imageName,
                         'size' => $image->getSize(),
                         'type' => $image->getMimeType(),
                     ]);
                 }
             }
 
-            // Reload product with updated images
             $product->load('productImages');
 
-            return response()->json($product);
+            return new ProductResource($product);
         } catch (ValidationException $e) {
             return response()->json($e->errors(), 422);
         } catch (\Exception $e) {

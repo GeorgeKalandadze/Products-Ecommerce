@@ -5,7 +5,8 @@ import {useState} from "react";
 
 
 export default function Products(props){
-    const products = JSON.parse(props.products)
+    const products = props.products.data
+    console.log(props.products.data,"dataaaaaaaaaaaaaaaaaaaa")
     const [currPage, setCurrPage] = useState(1);
     const lastIndex = currPage * 6;
     const firstIndex = lastIndex - 6;
