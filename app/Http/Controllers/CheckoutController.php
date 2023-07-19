@@ -218,7 +218,7 @@ class CheckoutController extends Controller
             $payment->save();
         }
 
-        return response()->json('order canceled succesfully');
+        return response()->json(['order' => $order]);
 
     }
 
