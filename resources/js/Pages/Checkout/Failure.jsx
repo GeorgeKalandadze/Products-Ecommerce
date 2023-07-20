@@ -1,11 +1,10 @@
 import ProductsLayout from "@/Layouts/ProductsLayout";
 
 const Failure = (props) => {
-    console.log(props,"props")
     return(
         <ProductsLayout>
-            <div>
-                <h1>Failure</h1>
+            <div className="w-full bg-red-600 p-4 rounded">
+                <h1 className="text-[16px] text-white">{props.message}</h1>
             </div>
         </ProductsLayout>
     )

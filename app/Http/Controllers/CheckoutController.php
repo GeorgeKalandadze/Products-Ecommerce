@@ -101,9 +101,6 @@ class CheckoutController extends Controller
 
 
 
-
-
-
     public static function getCartItems()
     {
         $request = \request();
@@ -233,6 +230,7 @@ class CheckoutController extends Controller
     {
         return Inertia::render('Checkout/Success');
     }
+
 //
 //    public function renderFailure() : Response
 //    {
